@@ -2,685 +2,1047 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的生活记录</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>我的生活日记</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1208;
-    --paper: #faf6ef;
-    --warm: #f0e8d8;
-    --accent: #c8603a;
-    --accent2: #4a7c6f;
-    --muted: #8a7e6e;
-    --border: #ddd5c4;
-    --like-bg: #f0f7f4;
-    --like-border: #4a7c6f;
-    --nope-bg: #fdf3ef;
-    --nope-border: #c8603a;
-  }
+:root {
+  --bg: #f7f3ed;
+  --surface: #ffffff;
+  --ink: #1c1712;
+  --muted: #8c7e6e;
+  --border: #e4ddd3;
+  --accent: #b85c38;
+  --accent2: #3d7a6b;
+  --accent3: #8b6914;
+  --warm: #f0e8d8;
+  --like: #edf6f2;
+  --like-b: #3d7a6b;
+  --mid: #fef9ed;
+  --mid-b: #8b6914;
+  --nope: #fdf0ec;
+  --nope-b: #b85c38;
+  --shadow: 0 2px 16px rgba(0,0,0,0.07);
+  --radius: 14px;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Noto Sans SC', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 20% 10%, rgba(200,96,58,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(74,124,111,0.06) 0%, transparent 50%);
-  }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  background-image: radial-gradient(ellipse at 15% 0%, rgba(184,92,56,0.07) 0%, transparent 55%),
+                    radial-gradient(ellipse at 85% 90%, rgba(61,122,107,0.07) 0%, transparent 55%);
+}
 
-  header {
-    padding: 40px 32px 24px;
-    border-bottom: 1px solid var(--border);
-    max-width: 960px;
-    margin: 0 auto;
-  }
+/* NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
-  .header-top {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 6px;
-  }
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  gap: 4px;
+}
 
-  h1 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-  }
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 20px; line-height: 1; }
 
-  .date-tag {
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+/* PAGES */
+.page { display: none; max-width: 680px; margin: 0 auto; padding: 24px 16px 16px; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  .subtitle {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 300;
-  }
+/* HEADER */
+.page-header { margin-bottom: 20px; }
+.page-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 300; }
 
-  .main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 24px;
-  }
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
 
-  /* Journal Section - spans full width */
-  .journal-section {
-    grid-column: 1 / -1;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  }
+.card-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .section-label {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+textarea, .chat-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--warm);
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+textarea:focus, .chat-input:focus { border-color: var(--accent2); background: #fff; }
+textarea::placeholder { color: #c0b5a5; }
 
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+/* BUTTONS */
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  letter-spacing: 0.04em;
+}
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(184,92,56,0.3); }
+.btn-secondary { background: var(--warm); color: var(--ink); border: 1px solid var(--border); }
+.btn-secondary:hover:not(:disabled) { background: var(--border); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
 
-  textarea {
-    width: 100%;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 18px;
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 15px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--ink);
-    background: var(--paper);
-    resize: vertical;
-    min-height: 130px;
-    transition: border-color 0.2s;
-    outline: none;
-  }
+.btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
 
-  textarea:focus {
-    border-color: var(--accent2);
-    background: white;
-  }
+/* SPINNER */
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  textarea::placeholder {
-    color: #bbb0a0;
-  }
+/* AI RESULT SECTIONS */
+.result-block {
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+  animation: popIn 0.35s ease;
+  display: none;
+}
+@keyframes popIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
 
-  .journal-footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 14px;
-    gap: 12px;
-  }
+.result-block.diary-block { background: #f9f6f1; border: 1px solid #e8e0d4; }
+.result-block.food-block { background: #f5faf8; border: 1px solid #d0e8e2; }
+.result-block.insight-block { background: #fdf6ee; border: 1px solid #e8d8c0; }
 
-  .char-hint {
-    font-size: 12px;
-    color: var(--muted);
-  }
+.result-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
-  .analyze-btn {
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-family: 'Noto Sans SC', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.result-text {
+  font-size: 14px;
+  line-height: 1.95;
+  color: #3a3028;
+  white-space: pre-wrap;
+}
 
-  .analyze-btn:hover:not(:disabled) {
-    background: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(200,96,58,0.3);
-  }
+/* FOOD TAGS */
+.food-section { margin-bottom: 12px; }
+.food-section-title { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
+.food-tags { display: flex; flex-wrap: wrap; gap: 7px; }
 
-  .analyze-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+.food-tag {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  animation: popIn 0.3s ease;
+}
+.food-tag.like { background: var(--like); color: var(--like-b); border: 1px solid #b8ddd3; }
+.food-tag.mid { background: var(--mid); color: var(--mid-b); border: 1px solid #ddd0a0; }
+.food-tag.nope { background: var(--nope); color: var(--nope-b); border: 1px solid #e8c4b4; }
+.food-tag-reason { font-size: 11px; opacity: 0.7; }
 
-  .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-  }
+/* CHAT */
+.chat-area {
+  background: var(--warm);
+  border-radius: 12px;
+  padding: 14px;
+  min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+  animation: popIn 0.25s ease;
+}
+.chat-msg.ai { background: white; border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-msg.user { background: var(--ink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-row { display: flex; gap: 8px; align-items: flex-end; margin-top: 8px; }
+.chat-row textarea { flex: 1; min-height: 44px; max-height: 100px; padding: 10px 14px; font-size: 14px; }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 14px; }
+.timeline-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.timeline-item:hover { transform: translateY(-2px); }
+.timeline-header {
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.timeline-date { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 600; }
+.timeline-preview { padding: 12px 18px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+.timeline-body { padding: 0 18px 16px; display: none; }
+.timeline-body.open { display: block; }
+.timeline-diary { font-size: 14px; line-height: 1.9; color: var(--ink); margin-top: 10px; white-space: pre-wrap; }
+.timeline-insight { font-size: 13px; color: #6a5a48; line-height: 1.8; margin-top: 10px; padding: 12px; background: var(--warm); border-radius: 8px; }
+.timeline-badge { font-size: 11px; color: var(--muted); background: var(--warm); padding: 3px 8px; border-radius: 8px; }
 
-  /* Analysis Result */
-  .analysis-result {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #fff9f0 0%, #f8fff8 100%);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px 28px;
-    display: none;
-    animation: fadeSlideIn 0.4s ease;
-  }
+/* FOOD LIST PAGE */
+.food-list-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.food-tab {
+  flex: 1; padding: 9px; border-radius: 10px; border: 1.5px solid var(--border);
+  font-family: 'Noto Sans SC', sans-serif; font-size: 13px; font-weight: 400;
+  cursor: pointer; background: white; transition: all 0.2s; text-align: center;
+}
+.food-tab.active.like { background: var(--like); border-color: var(--like-b); color: var(--like-b); font-weight: 500; }
+.food-tab.active.mid { background: var(--mid); border-color: var(--mid-b); color: var(--mid-b); font-weight: 500; }
+.food-tab.active.nope { background: var(--nope); border-color: var(--nope-b); color: var(--nope-b); font-weight: 500; }
 
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.food-list-items { display: flex; flex-direction: column; gap: 8px; }
+.food-list-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: 10px;
+  animation: popIn 0.25s ease;
+}
+.food-list-item.like { background: var(--like); }
+.food-list-item.mid { background: var(--mid); }
+.food-list-item.nope { background: var(--nope); }
+.food-item-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.like .food-item-dot { background: var(--like-b); }
+.mid .food-item-dot { background: var(--mid-b); }
+.nope .food-item-dot { background: var(--nope-b); }
+.food-item-name { font-size: 15px; font-weight: 400; }
+.food-item-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.food-item-del { margin-left: auto; background: none; border: none; color: #ccc; cursor: pointer; font-size: 18px; padding: 0 2px; transition: color 0.15s; }
+.food-item-del:hover { color: var(--accent); }
 
-  .analysis-text {
-    font-size: 14px;
-    line-height: 1.9;
-    color: var(--muted);
-    white-space: pre-wrap;
-  }
+.empty-state { text-align: center; padding: 40px 16px; color: #c0b5a5; }
+.empty-icon { font-size: 36px; margin-bottom: 10px; }
+.empty-text { font-size: 14px; line-height: 2; }
 
-  /* Lists */
-  .list-section {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    min-height: 280px;
-  }
+/* MONTHLY */
+.month-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.month-selector select {
+  flex: 1; padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: white;
+  font-family: 'Noto Sans SC', sans-serif; font-size: 14px;
+  color: var(--ink); outline: none;
+}
+.monthly-result { white-space: pre-wrap; font-size: 14px; line-height: 2; color: var(--ink); }
 
-  .list-section.likes { border-top: 3px solid var(--like-border); }
-  .list-section.nopes { border-top: 3px solid var(--nope-border); }
+/* ERROR */
+.error-msg {
+  background: #fff0f0; border: 1px solid #fcc; border-radius: 8px;
+  padding: 10px 14px; font-size: 13px; color: #c0392b;
+  margin-top: 10px; display: none;
+}
 
-  .list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
+/* IMPORT/EXPORT */
+.ie-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-  .list-title {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 200; display: none; align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 20px 20px 0 0;
+  width: 100%; max-width: 680px;
+  padding: 24px 20px 40px;
+  max-height: 85vh; overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.modal-close { float: right; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; }
 
-  .likes .list-title { color: var(--like-border); }
-  .nopes .list-title { color: var(--nope-border); }
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-  .count-badge {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-family: 'Noto Sans SC', sans-serif;
-  }
-
-  .likes .count-badge { background: var(--like-bg); color: var(--like-border); }
-  .nopes .count-badge { background: var(--nope-bg); color: var(--nope-border); }
-
-  .item-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .item-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.6;
-    animation: popIn 0.3s ease;
-    position: relative;
-  }
-
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .likes .item-card { background: var(--like-bg); }
-  .nopes .item-card { background: var(--nope-bg); }
-
-  .item-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    margin-top: 6px;
-    flex-shrink: 0;
-  }
-
-  .likes .item-dot { background: var(--like-border); }
-  .nopes .item-dot { background: var(--nope-border); }
-
-  .item-text { flex: 1; color: var(--ink); }
-
-  .item-meta {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .delete-btn {
-    background: none;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    padding: 0 2px;
-    transition: color 0.15s;
-    flex-shrink: 0;
-  }
-
-  .delete-btn:hover { color: var(--accent); }
-
-  .empty-state {
-    text-align: center;
-    padding: 32px 16px;
-    color: #c5bdb0;
-    font-size: 13px;
-    line-height: 2;
-  }
-
-  .empty-icon { font-size: 28px; margin-bottom: 8px; }
-
-  /* History */
-  .history-section {
-    grid-column: 1 / -1;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px 28px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  }
-
-  .history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 4px;
-  }
-
-  .history-entry {
-    padding: 12px 16px;
-    background: var(--warm);
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.7;
-    color: var(--muted);
-    border-left: 3px solid var(--border);
-    position: relative;
-  }
-
-  .history-entry-date {
-    font-size: 11px;
-    color: #aaa;
-    margin-bottom: 4px;
-    letter-spacing: 0.04em;
-  }
-
-  .history-entry-text {
-    color: var(--ink);
-    font-weight: 300;
-  }
-
-  .error-msg {
-    background: #fff0f0;
-    border: 1px solid #fcc;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #c0392b;
-    margin-top: 12px;
-    display: none;
-  }
-
-  @media (max-width: 640px) {
-    .main { grid-template-columns: 1fr; padding: 16px; }
-    .list-section { grid-column: 1; }
-    header { padding: 24px 16px 16px; }
-    h1 { font-size: 22px; }
-  }
+@media (max-width: 400px) {
+  .page { padding: 20px 12px 12px; }
+  .page-title { font-size: 20px; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <h1>我的生活记录</h1>
-    <span class="date-tag" id="today-date"></span>
+<!-- ===== PAGE: 今日记录 ===== -->
+<div class="page active" id="page-record">
+  <div class="page-header">
+    <div class="page-title">记录</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap">
+      <input type="date" id="entry-date-picker"
+        style="padding:7px 12px;border-radius:10px;border:1.5px solid var(--border);
+               font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--ink);
+               background:white;outline:none;flex:1;min-width:160px"
+        onchange="onDateChange()">
+      <div id="today-date-label" style="font-size:13px;color:var(--muted);font-weight:300"></div>
+    </div>
+    <div id="existing-entry-hint" style="display:none;margin-top:8px;font-size:13px;
+         color:var(--accent2);background:#edf6f2;padding:8px 12px;border-radius:8px">
+      📖 这一天已有日记，可以继续补充或重新分析
+    </div>
   </div>
-  <p class="subtitle">记录每一天，让 AI 帮你整理喜好与踩雷</p>
-</header>
 
-<div class="main">
+  <div class="card">
+    <div class="card-label">写下这一天</div>
+    <textarea id="journal-input" rows="7" placeholder="随意写，流水账就好 ——
 
-  <!-- Journal Input -->
-  <div class="journal-section">
-    <div class="section-label">今日记录</div>
-    <textarea id="journal-input" placeholder="随意写下今天发生的事，比如：今天午饭吃了螺蛳粉，觉得很好吃，下次还想买。晚饭点的那家黄焖鸡，汤汁太甜了，感觉一般，不太会再点了。还喝了一杯生椰拿铁，椰奶味很浓，很喜欢……"></textarea>
-    <div class="error-msg" id="error-msg"></div>
-    <div class="journal-footer">
-      <span class="char-hint" id="char-count">0 字</span>
-      <button class="analyze-btn" id="analyze-btn" onclick="analyzeEntry()">
-        <div class="spinner" id="spinner"></div>
-        <span id="btn-text">✦ AI 分析</span>
+今天吃了什么，去了哪里，见了谁，发生了什么事，有什么感想……都可以写在这里。AI 会帮你整理成日记，分析饮食偏好，还可以陪你聊聊。"></textarea>
+    <div class="error-msg" id="record-error"></div>
+    <div class="btn-row">
+      <span style="font-size:12px;color:var(--muted);align-self:center" id="char-count">0 字</span>
+      <button class="btn btn-primary" id="analyze-btn" onclick="analyzeEntry()">
+        <div class="spinner" id="analyze-spinner"></div>
+        <span id="analyze-btn-text">✦ AI 分析</span>
       </button>
     </div>
   </div>
 
-  <!-- AI Analysis Result -->
-  <div class="analysis-result" id="analysis-result">
-    <div class="section-label">AI 解读</div>
-    <div class="analysis-text" id="analysis-text"></div>
-  </div>
+  <!-- AI Results -->
+  <div id="results-area" style="display:none">
 
-  <!-- Likes List -->
-  <div class="list-section likes">
-    <div class="list-header">
-      <div class="list-title">💚 爱吃 / 好物</div>
-      <span class="count-badge" id="likes-count">0</span>
+    <!-- 日记正文 -->
+    <div class="result-block diary-block" id="diary-block">
+      <div class="result-title">📖 今日日记</div>
+      <div class="result-text" id="diary-text"></div>
     </div>
-    <ul class="item-list" id="likes-list">
-      <li>
-        <div class="empty-state">
-          <div class="empty-icon">🌿</div>
-          还没有记录<br>写下你的第一条日记吧
-        </div>
-      </li>
-    </ul>
-  </div>
 
-  <!-- Nopes List -->
-  <div class="list-section nopes">
-    <div class="list-header">
-      <div class="list-title">🚫 踩雷 / 不再买</div>
-      <span class="count-badge" id="nopes-count">0</span>
+    <!-- 感悟扩充 -->
+    <div class="result-block insight-block" id="insight-block">
+      <div class="result-title">💭 深一层想想</div>
+      <div class="result-text" id="insight-text"></div>
     </div>
-    <ul class="item-list" id="nopes-list">
-      <li>
-        <div class="empty-state">
-          <div class="empty-icon">🍂</div>
-          还没有踩雷记录<br>好事！
-        </div>
-      </li>
-    </ul>
-  </div>
 
-  <!-- History -->
-  <div class="history-section" id="history-section" style="display:none">
-    <div class="section-label">历史记录</div>
-    <div class="history-list" id="history-list"></div>
-  </div>
+    <!-- 饮食分类 -->
+    <div class="result-block food-block" id="food-block">
+      <div class="result-title">🍱 今日饮食</div>
+      <div id="food-like-section" class="food-section" style="display:none">
+        <div class="food-section-title">💚 好吃，还会再来</div>
+        <div class="food-tags" id="food-like-tags"></div>
+      </div>
+      <div id="food-mid-section" class="food-section" style="display:none">
+        <div class="food-section-title">💛 还行，可有可无</div>
+        <div class="food-tags" id="food-mid-tags"></div>
+      </div>
+      <div id="food-nope-section" class="food-section" style="display:none">
+        <div class="food-section-title">🚫 踩雷，不会再吃</div>
+        <div class="food-tags" id="food-nope-tags"></div>
+      </div>
+    </div>
 
+    <!-- 对话 -->
+    <div class="card" id="chat-card">
+      <div class="card-label">今日对话</div>
+      <div class="chat-area" id="chat-area"></div>
+      <div class="chat-row">
+        <textarea id="chat-input" rows="1" placeholder="聊聊今天…" style="min-height:44px"></textarea>
+        <button class="btn btn-primary btn-sm" id="chat-send-btn" onclick="sendChat()">
+          <div class="spinner" id="chat-spinner"></div>
+          <span id="chat-btn-text">发送</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="saveEntry()">💾 保存这篇日记</button>
+    </div>
+  </div>
 </div>
 
+<!-- ===== PAGE: 日记本 ===== -->
+<div class="page" id="page-timeline">
+  <div class="page-header">
+    <div class="page-title">日记本</div>
+    <div class="page-sub">按时间记录你的每一天</div>
+  </div>
+  <div id="timeline-list" class="timeline">
+    <div class="empty-state">
+      <div class="empty-icon">📖</div>
+      <div class="empty-text">还没有日记<br>去写下今天吧</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: 食物清单 ===== -->
+<div class="page" id="page-food">
+  <div class="page-header">
+    <div class="page-title">食物清单</div>
+    <div class="page-sub">你的专属饮食偏好库</div>
+  </div>
+  <div class="food-list-tabs">
+    <button class="food-tab active like" onclick="switchFoodTab('like')">💚 爱吃</button>
+    <button class="food-tab mid" onclick="switchFoodTab('mid')">💛 还行</button>
+    <button class="food-tab nope" onclick="switchFoodTab('nope')">🚫 踩雷</button>
+  </div>
+  <div class="food-list-items" id="food-list-items"></div>
+</div>
+
+<!-- ===== PAGE: 月度总结 ===== -->
+<div class="page" id="page-monthly">
+  <div class="page-header">
+    <div class="page-title">月度总结</div>
+    <div class="page-sub">AI 帮你回顾这个月</div>
+  </div>
+  <div class="card">
+    <div class="month-selector">
+      <select id="month-select"></select>
+      <button class="btn btn-primary btn-sm" onclick="generateMonthly()">
+        <div class="spinner" id="monthly-spinner"></div>
+        <span id="monthly-btn-text">✦ 生成总结</span>
+      </button>
+    </div>
+    <div id="monthly-result" style="display:none">
+      <div class="monthly-result" id="monthly-text"></div>
+    </div>
+    <div class="error-msg" id="monthly-error"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: 设置 ===== -->
+<div class="page" id="page-settings">
+  <div class="page-header">
+    <div class="page-title">设置</div>
+    <div class="page-sub">数据管理</div>
+  </div>
+  <div class="card">
+    <div class="card-label">导出数据</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">将所有日记和食物清单导出为 JSON 文件，可用于备份或换设备时导入。</p>
+    <button class="btn btn-primary" onclick="exportData()">📤 导出所有数据</button>
+  </div>
+  <div class="card">
+    <div class="card-label">导入数据</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">从之前导出的 JSON 文件导入数据（会合并到现有数据，不会覆盖）。</p>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📥 选择文件导入</button>
+    <div class="error-msg" id="import-error"></div>
+    <div id="import-success" style="display:none;margin-top:10px;font-size:13px;color:var(--like-b)">✅ 导入成功！</div>
+  </div>
+  <div class="card">
+    <div class="card-label">危险操作</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">清除所有本地数据，此操作不可恢复。</p>
+    <button class="btn btn-secondary" onclick="clearAllData()" style="color:var(--accent)">🗑️ 清除所有数据</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="switchPage('record', this)">
+    <span class="nav-icon">✏️</span>今日
+  </button>
+  <button class="nav-item" onclick="switchPage('timeline', this)">
+    <span class="nav-icon">📖</span>日记本
+  </button>
+  <button class="nav-item" onclick="switchPage('food', this)">
+    <span class="nav-icon">🍱</span>食物
+  </button>
+  <button class="nav-item" onclick="switchPage('monthly', this)">
+    <span class="nav-icon">📊</span>月度
+  </button>
+  <button class="nav-item" onclick="switchPage('settings', this)">
+    <span class="nav-icon">⚙️</span>设置
+  </button>
+</nav>
+
 <script>
-// State
-const state = {
-  likes: JSON.parse(localStorage.getItem('life_likes') || '[]'),
-  nopes: JSON.parse(localStorage.getItem('life_nopes') || '[]'),
-  history: JSON.parse(localStorage.getItem('life_history') || '[]')
+// ===== STATE =====
+const DB = {
+  entries: JSON.parse(localStorage.getItem('diary_entries') || '[]'),
+  foods: JSON.parse(localStorage.getItem('diary_foods') || '{"like":[],"mid":[],"nope":[]}'),
 };
 
-function save() {
-  localStorage.setItem('life_likes', JSON.stringify(state.likes));
-  localStorage.setItem('life_nopes', JSON.stringify(state.nopes));
-  localStorage.setItem('life_history', JSON.stringify(state.history));
+function saveDB() {
+  localStorage.setItem('diary_entries', JSON.stringify(DB.entries));
+  localStorage.setItem('diary_foods', JSON.stringify(DB.foods));
 }
 
-// Date
-document.getElementById('today-date').textContent = new Date().toLocaleDateString('zh-CN', {
-  year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-});
+// ===== NAVIGATION =====
+function switchPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'timeline') renderTimeline();
+  if (name === 'food') renderFoodList(currentFoodTab);
+  if (name === 'monthly') buildMonthSelector();
+}
 
-// Char count
-document.getElementById('journal-input').addEventListener('input', function() {
+// ===== DATE =====
+function fmtDate(d) {
+  return d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' });
+}
+function fmtDateShort(d) {
+  return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+}
+function fmtMonthKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
+function pickerValToDate(val) {
+  const [y,m,day] = val.split('-').map(Number);
+  return new Date(y, m-1, day);
+}
+function todayPickerVal() {
+  const now = new Date();
+  return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+}
+
+// Init date picker
+const picker = document.getElementById('entry-date-picker');
+picker.value = todayPickerVal();
+picker.max = todayPickerVal();
+document.getElementById('today-date-label').textContent = fmtDate(new Date());
+
+function onDateChange() {
+  const val = picker.value;
+  if (!val) return;
+  const d = pickerValToDate(val);
+  document.getElementById('today-date-label').textContent = fmtDate(d);
+  document.getElementById('results-area').style.display = 'none';
+  currentAnalysis = null;
+  chatHistory = [];
+  journalInput.value = '';
+  document.getElementById('char-count').textContent = '0 字';
+  const dateKey = fmtDateShort(d);
+  const existing = DB.entries.find(e => e.dateKey === dateKey);
+  const hint = document.getElementById('existing-entry-hint');
+  if (existing) {
+    hint.style.display = 'block';
+    if (existing.raw) {
+      journalInput.value = existing.raw;
+      document.getElementById('char-count').textContent = existing.raw.length + ' 字';
+    }
+  } else {
+    hint.style.display = 'none';
+  }
+}
+
+// ===== CHAR COUNT =====
+const journalInput = document.getElementById('journal-input');
+journalInput.addEventListener('input', function() {
   document.getElementById('char-count').textContent = this.value.length + ' 字';
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 400) + 'px';
 });
 
-// Render
-function renderLikes() {
-  const el = document.getElementById('likes-list');
-  document.getElementById('likes-count').textContent = state.likes.length;
-  if (!state.likes.length) {
-    el.innerHTML = `<li><div class="empty-state"><div class="empty-icon">🌿</div>还没有记录<br>写下你的第一条日记吧</div></li>`;
-    return;
-  }
-  el.innerHTML = state.likes.map((item, i) => `
-    <li class="item-card">
-      <div class="item-dot"></div>
-      <div style="flex:1">
-        <div class="item-text">${escHtml(item.name)}</div>
-        ${item.reason ? `<div class="item-meta">${escHtml(item.reason)}</div>` : ''}
-        <div class="item-meta">${item.date}</div>
-      </div>
-      <button class="delete-btn" onclick="deleteItem('likes',${i})" title="删除">×</button>
-    </li>`).join('');
-}
+// ===== CURRENT SESSION =====
+let currentAnalysis = null;
+let chatHistory = [];
 
-function renderNopes() {
-  const el = document.getElementById('nopes-list');
-  document.getElementById('nopes-count').textContent = state.nopes.length;
-  if (!state.nopes.length) {
-    el.innerHTML = `<li><div class="empty-state"><div class="empty-icon">🍂</div>还没有踩雷记录<br>好事！</div></li>`;
-    return;
-  }
-  el.innerHTML = state.nopes.map((item, i) => `
-    <li class="item-card">
-      <div class="item-dot"></div>
-      <div style="flex:1">
-        <div class="item-text">${escHtml(item.name)}</div>
-        ${item.reason ? `<div class="item-meta">${escHtml(item.reason)}</div>` : ''}
-        <div class="item-meta">${item.date}</div>
-      </div>
-      <button class="delete-btn" onclick="deleteItem('nopes',${i})" title="删除">×</button>
-    </li>`).join('');
-}
-
-function renderHistory() {
-  const sec = document.getElementById('history-section');
-  const el = document.getElementById('history-list');
-  if (!state.history.length) { sec.style.display = 'none'; return; }
-  sec.style.display = '';
-  el.innerHTML = state.history.slice().reverse().map(h => `
-    <div class="history-entry">
-      <div class="history-entry-date">${h.date}</div>
-      <div class="history-entry-text">${escHtml(h.text)}</div>
-    </div>`).join('');
-}
-
-function deleteItem(list, idx) {
-  state[list].splice(idx, 1);
-  save();
-  list === 'likes' ? renderLikes() : renderNopes();
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// AI Analysis
+// ===== ANALYZE =====
 async function analyzeEntry() {
-  const input = document.getElementById('journal-input').value.trim();
-  if (!input) {
-    showError('请先写下今天的记录～');
-    return;
-  }
-  if (input.length < 10) {
-    showError('多写一点，让 AI 更好地理解你的感受 😊');
-    return;
-  }
+  const input = journalInput.value.trim();
+  if (!input) { showError('record-error', '请先写下今天发生的事～'); return; }
+  if (input.length < 20) { showError('record-error', '多写一点，AI 才能帮你分析得更准 😊'); return; }
 
-  setLoading(true);
-  hideError();
+  setLoading('analyze-btn', 'analyze-spinner', 'analyze-btn-text', true, '分析中…');
+  hideError('record-error');
 
-  const today = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
-
-  const prompt = `你是一个帮用户整理个人喜好的助手。请认真分析以下用户今天写的生活记录，提取其中提到的食物、产品或事物，判断用户对它们的态度，分成两类：
-1. 喜欢/愿意再买/好的体验（likes）
-2. 不喜欢/不会再买/踩雷（nopes）
+  const prompt = `你是用户的私人日记助手。规则：只输出纯JSON对象，不要任何解释、不要markdown代码块、不要```符号，直接以{开头以}结尾。请分析以下用户写的流水账记录：
 
 用户记录：
 ${input}
 
-请只返回如下JSON格式，不要任何解释或多余文字：
+返回格式：
 {
-  "summary": "一句话总结这段记录的核心内容（20字以内）",
-  "likes": [
-    {"name": "物品名称", "reason": "简短原因（10字内）"}
-  ],
-  "nopes": [
-    {"name": "物品名称", "reason": "简短原因（10字内）"}
-  ]
+  "diary": "将用户的流水账整理成一篇有温度的日记，用第一人称，文字优美但不矫情，保留用户的核心内容和情感，适当修饰表达，约150-300字",
+  "insight": "从用户的记录中，挖掘他们可能没有明说但隐含的情绪、想法或人生感悟，帮助他们想得更深一些。如果没有明显感悟内容则返回空字符串",
+  "chat_opener": "用温暖自然的语气，像朋友一样回应用户今天的经历，引导聊天，约50字",
+  "foods": {
+    "like": [{"name": "食物名称", "reason": "好在哪里，10字内"}],
+    "mid": [{"name": "食物名称", "reason": "为何可有可无，10字内"}],
+    "nope": [{"name": "食物名称", "reason": "为何不会再吃，10字内"}]
+  }
 }
 
 注意：
-- 如果某类没有，对应数组留空 []
-- reason 如果没有明确理由可以留空字符串
-- name 要具体，比如"螺蛳粉"而不是"食物"`;
+- 如果某类食物没有，对应数组留空[]
+- reason 没有明确原因可留空字符串
+- 食物名称要具体
+- 只返回JSON，不要任何其他内容`;
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
+    const res = await callAI(prompt);
+    const parsed = parseJSON(res);
+    if (!parsed) { showError('record-error', 'AI 返回格式有误，请重试'); setLoading('analyze-btn','analyze-spinner','analyze-btn-text',false,'✦ AI 分析'); return; }
 
-    const data = await response.json();
+    currentAnalysis = parsed;
+    chatHistory = [];
 
-    if (data.error) {
-      showError('AI 暂时无法响应：' + (data.error.message || '未知错误'));
-      setLoading(false);
-      return;
+    // Show diary
+    if (parsed.diary) {
+      document.getElementById('diary-text').textContent = parsed.diary;
+      show('diary-block');
     }
 
-    const rawText = data.content.map(b => b.text || '').join('');
-    let parsed;
-
-    try {
-      const clean = rawText.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
-    } catch(e) {
-      showError('AI 返回格式有误，请重试');
-      setLoading(false);
-      return;
+    // Show insight
+    if (parsed.insight) {
+      document.getElementById('insight-text').textContent = parsed.insight;
+      show('insight-block');
     }
 
-    // Show summary
-    const resultEl = document.getElementById('analysis-result');
-    const textEl = document.getElementById('analysis-text');
-    resultEl.style.display = 'block';
-
-    let summary = parsed.summary || '已分析完成';
-    let detail = `✦ ${summary}\n\n`;
-    if (parsed.likes?.length) detail += `💚 发现 ${parsed.likes.length} 个好物：${parsed.likes.map(i=>i.name).join('、')}\n`;
-    if (parsed.nopes?.length) detail += `🚫 发现 ${parsed.nopes.length} 个踩雷：${parsed.nopes.map(i=>i.name).join('、')}`;
-    if (!parsed.likes?.length && !parsed.nopes?.length) detail += '这段记录里没有明显的喜好信息，可以多描述一下感受哦～';
-
-    textEl.textContent = detail.trim();
-
-    // Add to lists
-    const dateStr = today;
-    if (parsed.likes?.length) {
-      parsed.likes.forEach(item => {
-        if (!state.likes.find(e => e.name === item.name)) {
-          state.likes.push({ name: item.name, reason: item.reason || '', date: dateStr });
-        }
-      });
-    }
-    if (parsed.nopes?.length) {
-      parsed.nopes.forEach(item => {
-        if (!state.nopes.find(e => e.name === item.name)) {
-          state.nopes.push({ name: item.name, reason: item.reason || '', date: dateStr });
-        }
-      });
+    // Show foods
+    const foods = parsed.foods || {};
+    let hasFoods = false;
+    renderResultFoods('like', foods.like || []);
+    renderResultFoods('mid', foods.mid || []);
+    renderResultFoods('nope', foods.nope || []);
+    if ((foods.like||[]).length || (foods.mid||[]).length || (foods.nope||[]).length) {
+      hasFoods = true;
+      show('food-block');
     }
 
-    // Save to history
-    state.history.push({
-      date: new Date().toLocaleString('zh-CN', { month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }),
-      text: input
-    });
+    // Chat opener
+    const chatArea = document.getElementById('chat-area');
+    chatArea.innerHTML = '';
+    if (parsed.chat_opener) {
+      addChatMsg('ai', parsed.chat_opener);
+      chatHistory.push({ role: 'assistant', content: parsed.chat_opener });
+    }
 
-    save();
-    renderLikes();
-    renderNopes();
-    renderHistory();
+    show('results-area');
 
-    document.getElementById('journal-input').value = '';
-    document.getElementById('char-count').textContent = '0 字';
-
-  } catch(err) {
-    showError('网络错误，请稍后重试');
+  } catch(e) {
+    showError('record-error', '网络错误，请稍后重试');
   }
 
-  setLoading(false);
+  setLoading('analyze-btn','analyze-spinner','analyze-btn-text',false,'✦ AI 分析');
 }
 
-function setLoading(on) {
-  const btn = document.getElementById('analyze-btn');
-  const spinner = document.getElementById('spinner');
-  const txt = document.getElementById('btn-text');
-  btn.disabled = on;
-  spinner.style.display = on ? 'block' : 'none';
-  txt.textContent = on ? '分析中…' : '✦ AI 分析';
+function renderResultFoods(type, items) {
+  const section = document.getElementById('food-' + type + '-section');
+  const tags = document.getElementById('food-' + type + '-tags');
+  if (!items.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  tags.innerHTML = items.map(item => `
+    <span class="food-tag ${type}">
+      ${escHtml(item.name)}
+      ${item.reason ? `<span class="food-tag-reason">· ${escHtml(item.reason)}</span>` : ''}
+    </span>`).join('');
 }
 
-function showError(msg) {
-  const el = document.getElementById('error-msg');
-  el.textContent = msg;
-  el.style.display = 'block';
+// ===== SAVE ENTRY =====
+function saveEntry() {
+  if (!currentAnalysis) return;
+  const raw = journalInput.value.trim();
+  const pickerVal = document.getElementById('entry-date-picker').value;
+  const entryDate = pickerVal ? pickerValToDate(pickerVal) : new Date();
+  const dateKey = fmtDateShort(entryDate);
+
+  // Save foods to DB
+  const foods = currentAnalysis.foods || {};
+  ['like','mid','nope'].forEach(type => {
+    (foods[type] || []).forEach(item => {
+      if (!DB.foods[type].find(e => e.name === item.name)) {
+        DB.foods[type].push({ name: item.name, reason: item.reason || '', date: dateKey });
+      }
+    });
+  });
+
+  // Save entry
+  const existing = DB.entries.findIndex(e => e.dateKey === dateKey);
+  const entry = {
+    dateKey,
+    dateLabel: fmtDate(entryDate),
+    monthKey: fmtMonthKey(entryDate),
+    raw,
+    diary: currentAnalysis.diary || '',
+    insight: currentAnalysis.insight || '',
+    foods: currentAnalysis.foods || {},
+    savedAt: new Date().toISOString()
+  };
+  if (existing >= 0) DB.entries[existing] = entry;
+  else DB.entries.push(entry);
+
+  DB.entries.sort((a,b) => b.dateKey.localeCompare(a.dateKey));
+  saveDB();
+
+  // Clear
+  journalInput.value = '';
+  document.getElementById('char-count').textContent = '0 字';
+  document.getElementById('results-area').style.display = 'none';
+  currentAnalysis = null;
+
+  alert('✅ 日记已保存！');
 }
 
-function hideError() {
-  document.getElementById('error-msg').style.display = 'none';
+// ===== CHAT =====
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addChatMsg('user', msg);
+  chatHistory.push({ role: 'user', content: msg });
+  input.value = '';
+
+  setLoading('chat-send-btn','chat-spinner','chat-btn-text',true,'…');
+
+  const systemPrompt = `你是用户的私人日记助手，正在基于用户今天的日记内容和他们聊天。
+用户今天的记录：${journalInput.value || (currentAnalysis ? currentAnalysis.diary : '')}
+请像一个温暖的朋友一样回应，语气自然亲切，不要太长（100字以内），可以追问、共情、分享想法。`;
+
+  try {
+    const messages = [
+      { role: 'user', content: systemPrompt + '\n\n以下是我们的对话：' },
+      { role: 'assistant', content: '好的，我在听～' },
+      ...chatHistory
+    ];
+    const res = await callAIMessages(messages);
+    addChatMsg('ai', res);
+    chatHistory.push({ role: 'assistant', content: res });
+  } catch(e) {
+    addChatMsg('ai', '网络好像有点问题，稍后再试试吧～');
+  }
+
+  setLoading('chat-send-btn','chat-spinner','chat-btn-text',false,'发送');
 }
 
-// Init
-renderLikes();
-renderNopes();
-renderHistory();
+function addChatMsg(role, text) {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  div.textContent = text;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+document.getElementById('chat-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+});
+
+// ===== TIMELINE =====
+function renderTimeline() {
+  const el = document.getElementById('timeline-list');
+  if (!DB.entries.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📖</div><div class="empty-text">还没有日记<br>去写下今天吧</div></div>`;
+    return;
+  }
+  el.innerHTML = DB.entries.map((entry, i) => {
+    const foodCount = Object.values(entry.foods || {}).reduce((a,b) => a + (b||[]).length, 0);
+    return `<div class="timeline-item" onclick="toggleTimeline(${i})">
+      <div class="timeline-header">
+        <div class="timeline-date">${entry.dateLabel || entry.dateKey}</div>
+        <span class="timeline-badge">${foodCount ? `🍱 ${foodCount} 种食物` : ''}</span>
+      </div>
+      <div class="timeline-preview">${escHtml((entry.diary || entry.raw || '').slice(0, 80))}…</div>
+      <div class="timeline-body" id="tl-body-${i}">
+        ${entry.diary ? `<div class="timeline-diary">${escHtml(entry.diary)}</div>` : ''}
+        ${entry.insight ? `<div class="timeline-insight">💭 ${escHtml(entry.insight)}</div>` : ''}
+        ${renderTimelineFoods(entry.foods)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTimelineFoods(foods) {
+  if (!foods) return '';
+  const all = [...(foods.like||[]).map(f=>({...f,type:'like'})),
+               ...(foods.mid||[]).map(f=>({...f,type:'mid'})),
+               ...(foods.nope||[]).map(f=>({...f,type:'nope'}))];
+  if (!all.length) return '';
+  return `<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">` +
+    all.map(f => `<span class="food-tag ${f.type}">${escHtml(f.name)}</span>`).join('') + `</div>`;
+}
+
+function toggleTimeline(i) {
+  const body = document.getElementById('tl-body-' + i);
+  body.classList.toggle('open');
+}
+
+// ===== FOOD LIST =====
+let currentFoodTab = 'like';
+
+function switchFoodTab(tab) {
+  currentFoodTab = tab;
+  document.querySelectorAll('.food-tab').forEach(t => {
+    t.classList.remove('active','like','mid','nope');
+  });
+  const tabs = document.querySelectorAll('.food-tab');
+  const idx = ['like','mid','nope'].indexOf(tab);
+  tabs[idx].classList.add('active', tab);
+  renderFoodList(tab);
+}
+
+function renderFoodList(tab) {
+  const el = document.getElementById('food-list-items');
+  const items = DB.foods[tab] || [];
+  if (!items.length) {
+    const msgs = { like:'还没有爱吃的记录', mid:'还没有可有可无的记录', nope:'还没有踩雷记录，好事！' };
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">${tab==='like'?'🌿':tab==='mid'?'🌾':'🍂'}</div><div class="empty-text">${msgs[tab]}</div></div>`;
+    return;
+  }
+  el.innerHTML = items.map((item, i) => `
+    <div class="food-list-item ${tab}">
+      <div class="food-item-dot"></div>
+      <div style="flex:1">
+        <div class="food-item-name">${escHtml(item.name)}</div>
+        ${item.reason ? `<div class="food-item-meta">${escHtml(item.reason)}</div>` : ''}
+        <div class="food-item-meta">${item.date || ''}</div>
+      </div>
+      <button class="food-item-del" onclick="deleteFood('${tab}',${i})">×</button>
+    </div>`).join('');
+}
+
+function deleteFood(tab, idx) {
+  DB.foods[tab].splice(idx, 1);
+  saveDB();
+  renderFoodList(tab);
+}
+
+// ===== MONTHLY =====
+function buildMonthSelector() {
+  const sel = document.getElementById('month-select');
+  const months = [...new Set(DB.entries.map(e => e.monthKey))].sort().reverse();
+  if (!months.length) {
+    sel.innerHTML = '<option>暂无数据</option>';
+    return;
+  }
+  sel.innerHTML = months.map(m => `<option value="${m}">${m.replace('-','年')}月</option>`).join('');
+}
+
+async function generateMonthly() {
+  const monthKey = document.getElementById('month-select').value;
+  if (!monthKey || monthKey === '暂无数据') { showError('monthly-error','还没有这个月的日记'); return; }
+
+  const entries = DB.entries.filter(e => e.monthKey === monthKey);
+  if (!entries.length) { showError('monthly-error','这个月还没有日记'); return; }
+
+  setLoading('monthly-btn','monthly-spinner','monthly-btn-text',true,'生成中…');
+  hideError('monthly-error');
+
+  const diaries = entries.map(e => `【${e.dateKey}】\n${e.diary || e.raw}`).join('\n\n---\n\n');
+  const allFoods = {
+    like: [...new Set(entries.flatMap(e => (e.foods?.like||[]).map(f=>f.name)))],
+    mid: [...new Set(entries.flatMap(e => (e.foods?.mid||[]).map(f=>f.name)))],
+    nope: [...new Set(entries.flatMap(e => (e.foods?.nope||[]).map(f=>f.name)))],
+  };
+
+  const prompt = `请根据以下这个月的日记内容，生成一份温暖有深度的月度总结，包括：
+1. 这个月的整体状态和情绪基调
+2. 重要的经历或事件回顾
+3. 这个月的饮食偏好变化（爱吃：${allFoods.like.join('、')||'无'}；踩雷：${allFoods.nope.join('、')||'无'}）
+4. 这个月的成长或感悟
+5. 对下个月的一点期许
+
+语气温暖而有质感，约400字。
+
+日记内容：
+${diaries}`;
+
+  try {
+    const res = await callAI(prompt);
+    document.getElementById('monthly-text').textContent = res;
+    show('monthly-result');
+  } catch(e) {
+    showError('monthly-error','生成失败，请稍后重试');
+  }
+
+  setLoading('monthly-btn','monthly-spinner','monthly-btn-text',false,'✦ 生成总结');
+}
+
+// ===== IMPORT / EXPORT =====
+function exportData() {
+  const data = { entries: DB.entries, foods: DB.foods, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '我的日记备份_' + fmtDateShort(new Date()).replace(/\//g,'-') + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.entries || !data.foods) throw new Error('格式错误');
+
+      // Merge entries
+      data.entries.forEach(entry => {
+        if (!DB.entries.find(e => e.dateKey === entry.dateKey)) {
+          DB.entries.push(entry);
+        }
+      });
+
+      // Merge foods
+      ['like','mid','nope'].forEach(type => {
+        (data.foods[type] || []).forEach(item => {
+          if (!DB.foods[type].find(e => e.name === item.name)) {
+            DB.foods[type].push(item);
+          }
+        });
+      });
+
+      DB.entries.sort((a,b) => b.dateKey.localeCompare(a.dateKey));
+      saveDB();
+      document.getElementById('import-success').style.display = 'block';
+      setTimeout(() => document.getElementById('import-success').style.display = 'none', 3000);
+    } catch(err) {
+      showError('import-error', '文件格式不正确，请使用本应用导出的备份文件');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function clearAllData() {
+  if (!confirm('确定要清除所有数据吗？此操作不可恢复！')) return;
+  DB.entries = [];
+  DB.foods = { like:[], mid:[], nope:[] };
+  saveDB();
+  alert('已清除所有数据');
+}
+
+// ===== AI HELPERS =====
+async function callAI(userPrompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: userPrompt }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(b => b.text || '').join('');
+}
+
+async function callAIMessages(messages) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(b => b.text || '').join('');
+}
+
+function parseJSON(text) {
+  try {
+    let clean = text.replace(/```json|```/g,'').trim();
+    // Try direct parse first
+    return JSON.parse(clean);
+  } catch {
+    try {
+      // Try to extract JSON object from text
+      const match = text.match(/\{[\s\S]*\}/);
+      if (match) return JSON.parse(match[0]);
+    } catch {}
+    return null;
+  }
+}
+
+// ===== UI HELPERS =====
+function show(id) { document.getElementById(id).style.display = 'block'; }
+function showError(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
+function hideError(id) { document.getElementById(id).style.display='none'; }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function setLoading(btnId, spinnerId, textId, on, loadingText) {
+  document.getElementById(btnId).disabled = on;
+  document.getElementById(spinnerId).style.display = on ? 'block' : 'none';
+  if (textId) document.getElementById(textId).textContent = on ? loadingText : document.getElementById(textId).dataset.orig || document.getElementById(textId).textContent;
+  if (on && textId) document.getElementById(textId).dataset.orig = document.getElementById(textId).textContent;
+}
 </script>
 </body>
 </html>
