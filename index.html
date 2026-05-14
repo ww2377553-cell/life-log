@@ -5,1044 +5,1088 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>我的生活日记</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<title>数字生命日记</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #f7f3ed;
-  --surface: #ffffff;
+  --surface: #fff;
   --ink: #1c1712;
   --muted: #8c7e6e;
   --border: #e4ddd3;
   --accent: #b85c38;
   --accent2: #3d7a6b;
-  --accent3: #8b6914;
   --warm: #f0e8d8;
-  --like: #edf6f2;
-  --like-b: #3d7a6b;
-  --mid: #fef9ed;
-  --mid-b: #8b6914;
-  --nope: #fdf0ec;
-  --nope-b: #b85c38;
+  --like: #edf6f2; --like-b: #3d7a6b;
+  --mid:  #fef9ed; --mid-b:  #8b6914;
+  --nope: #fdf0ec; --nope-b: #b85c38;
   --shadow: 0 2px 16px rgba(0,0,0,0.07);
-  --radius: 14px;
+  --r: 14px;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 300;
-  min-height: 100vh;
-  padding-bottom: 80px;
-  background-image: radial-gradient(ellipse at 15% 0%, rgba(184,92,56,0.07) 0%, transparent 55%),
-                    radial-gradient(ellipse at 85% 90%, rgba(61,122,107,0.07) 0%, transparent 55%);
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans SC',sans-serif;font-weight:300;min-height:100vh;padding-bottom:80px;background-image:radial-gradient(ellipse at 15% 0%,rgba(184,92,56,.07) 0%,transparent 55%),radial-gradient(ellipse at 85% 90%,rgba(61,122,107,.07) 0%,transparent 55%)}
 
 /* NAV */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-  background: none;
-  color: var(--muted);
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  gap: 4px;
-}
-
-.nav-item.active { color: var(--accent); }
-.nav-icon { font-size: 20px; line-height: 1; }
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;cursor:pointer;border:none;background:none;color:var(--muted);font-family:'Noto Sans SC',sans-serif;font-size:10px;font-weight:400;gap:4px;transition:color .2s}
+.nav-item.active{color:var(--accent)}
+.nav-icon{width:22px;height:22px;display:block}
 
 /* PAGES */
-.page { display: none; max-width: 680px; margin: 0 auto; padding: 24px 16px 16px; animation: fadeIn 0.3s ease; }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-/* HEADER */
-.page-header { margin-bottom: 20px; }
-.page-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-}
-.page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 300; }
+.page{display:none;max-width:700px;margin:0 auto;padding:24px 16px 16px;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page-title{font-family:'Noto Serif SC',serif;font-size:24px;font-weight:700;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
 
 /* CARDS */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
-.card-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-textarea, .chat-input {
-  width: 100%;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.85;
-  color: var(--ink);
-  background: var(--warm);
-  resize: none;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
-}
-textarea:focus, .chat-input:focus { border-color: var(--accent2); background: #fff; }
-textarea::placeholder { color: #c0b5a5; }
+/* INPUTS */
+textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;font-family:'Noto Sans SC',sans-serif;font-size:15px;font-weight:300;line-height:1.85;color:var(--ink);background:var(--warm);resize:none;outline:none;transition:border-color .2s,background .2s}
+textarea:focus{border-color:var(--accent2);background:#fff}
+textarea::placeholder{color:#c0b5a5}
+input[type=date]{padding:8px 14px;border-radius:10px;border:1.5px solid var(--border);font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--ink);background:white;outline:none}
 
 /* BUTTONS */
-.btn {
-  border: none;
-  border-radius: 10px;
-  padding: 11px 22px;
-  font-family: 'Noto Sans SC', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  letter-spacing: 0.04em;
-}
-.btn-primary { background: var(--ink); color: #fff; }
-.btn-primary:hover:not(:disabled) { background: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(184,92,56,0.3); }
-.btn-secondary { background: var(--warm); color: var(--ink); border: 1px solid var(--border); }
-.btn-secondary:hover:not(:disabled) { background: var(--border); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-sm { padding: 7px 14px; font-size: 13px; }
-
-.btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+.btn{border:none;border-radius:10px;padding:11px 22px;font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:400;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;letter-spacing:.04em}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 14px rgba(184,92,56,.3)}
+.btn-success{background:var(--accent2);color:#fff}
+.btn-success:hover:not(:disabled){background:#2d6a5b;transform:translateY(-1px)}
+.btn-ghost{background:var(--warm);color:var(--ink);border:1px solid var(--border)}
+.btn-ghost:hover:not(:disabled){background:var(--border)}
+.btn-outline{background:transparent;color:var(--accent2);border:1.5px solid var(--accent2)}
+.btn-outline:hover:not(:disabled){background:var(--like)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
 
 /* SPINNER */
-.spinner {
-  width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  display: none;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* AI RESULT SECTIONS */
-.result-block {
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 14px;
-  animation: popIn 0.35s ease;
-  display: none;
-}
-@keyframes popIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
-
-.result-block.diary-block { background: #f9f6f1; border: 1px solid #e8e0d4; }
-.result-block.food-block { background: #f5faf8; border: 1px solid #d0e8e2; }
-.result-block.insight-block { background: #fdf6ee; border: 1px solid #e8d8c0; }
-
-.result-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.result-text {
-  font-size: 14px;
-  line-height: 1.95;
-  color: #3a3028;
-  white-space: pre-wrap;
-}
-
-/* FOOD TAGS */
-.food-section { margin-bottom: 12px; }
-.food-section-title { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
-.food-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-
-.food-tag {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  animation: popIn 0.3s ease;
-}
-.food-tag.like { background: var(--like); color: var(--like-b); border: 1px solid #b8ddd3; }
-.food-tag.mid { background: var(--mid); color: var(--mid-b); border: 1px solid #ddd0a0; }
-.food-tag.nope { background: var(--nope); color: var(--nope-b); border: 1px solid #e8c4b4; }
-.food-tag-reason { font-size: 11px; opacity: 0.7; }
-
-/* CHAT */
-.chat-area {
-  background: var(--warm);
-  border-radius: 12px;
-  padding: 14px;
-  min-height: 120px;
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.chat-msg {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.7;
-  animation: popIn 0.25s ease;
-}
-.chat-msg.ai { background: white; border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
-.chat-msg.user { background: var(--ink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-row { display: flex; gap: 8px; align-items: flex-end; margin-top: 8px; }
-.chat-row textarea { flex: 1; min-height: 44px; max-height: 100px; padding: 10px 14px; font-size: 14px; }
-
-/* TIMELINE */
-.timeline { display: flex; flex-direction: column; gap: 14px; }
-.timeline-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: transform 0.15s;
-}
-.timeline-item:hover { transform: translateY(-2px); }
-.timeline-header {
-  padding: 14px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-}
-.timeline-date { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 600; }
-.timeline-preview { padding: 12px 18px; font-size: 13px; color: var(--muted); line-height: 1.7; }
-.timeline-body { padding: 0 18px 16px; display: none; }
-.timeline-body.open { display: block; }
-.timeline-diary { font-size: 14px; line-height: 1.9; color: var(--ink); margin-top: 10px; white-space: pre-wrap; }
-.timeline-insight { font-size: 13px; color: #6a5a48; line-height: 1.8; margin-top: 10px; padding: 12px; background: var(--warm); border-radius: 8px; }
-.timeline-badge { font-size: 11px; color: var(--muted); background: var(--warm); padding: 3px 8px; border-radius: 8px; }
-
-/* FOOD LIST PAGE */
-.food-list-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-.food-tab {
-  flex: 1; padding: 9px; border-radius: 10px; border: 1.5px solid var(--border);
-  font-family: 'Noto Sans SC', sans-serif; font-size: 13px; font-weight: 400;
-  cursor: pointer; background: white; transition: all 0.2s; text-align: center;
-}
-.food-tab.active.like { background: var(--like); border-color: var(--like-b); color: var(--like-b); font-weight: 500; }
-.food-tab.active.mid { background: var(--mid); border-color: var(--mid-b); color: var(--mid-b); font-weight: 500; }
-.food-tab.active.nope { background: var(--nope); border-color: var(--nope-b); color: var(--nope-b); font-weight: 500; }
-
-.food-list-items { display: flex; flex-direction: column; gap: 8px; }
-.food-list-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 12px 14px; border-radius: 10px;
-  animation: popIn 0.25s ease;
-}
-.food-list-item.like { background: var(--like); }
-.food-list-item.mid { background: var(--mid); }
-.food-list-item.nope { background: var(--nope); }
-.food-item-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-.like .food-item-dot { background: var(--like-b); }
-.mid .food-item-dot { background: var(--mid-b); }
-.nope .food-item-dot { background: var(--nope-b); }
-.food-item-name { font-size: 15px; font-weight: 400; }
-.food-item-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.food-item-del { margin-left: auto; background: none; border: none; color: #ccc; cursor: pointer; font-size: 18px; padding: 0 2px; transition: color 0.15s; }
-.food-item-del:hover { color: var(--accent); }
-
-.empty-state { text-align: center; padding: 40px 16px; color: #c0b5a5; }
-.empty-icon { font-size: 36px; margin-bottom: 10px; }
-.empty-text { font-size: 14px; line-height: 2; }
-
-/* MONTHLY */
-.month-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.month-selector select {
-  flex: 1; padding: 10px 14px; border-radius: 10px;
-  border: 1.5px solid var(--border); background: white;
-  font-family: 'Noto Sans SC', sans-serif; font-size: 14px;
-  color: var(--ink); outline: none;
-}
-.monthly-result { white-space: pre-wrap; font-size: 14px; line-height: 2; color: var(--ink); }
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ERROR */
-.error-msg {
-  background: #fff0f0; border: 1px solid #fcc; border-radius: 8px;
-  padding: 10px 14px; font-size: 13px; color: #c0392b;
-  margin-top: 10px; display: none;
-}
+.error-msg{background:#fff0f0;border:1px solid #fcc;border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-top:10px;display:none}
 
-/* IMPORT/EXPORT */
-.ie-row { display: flex; gap: 10px; flex-wrap: wrap; }
+/* HINT */
+.hint-bar{font-size:13px;color:var(--accent2);background:var(--like);padding:8px 14px;border-radius:8px;margin-bottom:14px;display:none}
 
-/* MODAL */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-  z-index: 200; display: none; align-items: flex-end;
-  justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: white; border-radius: 20px 20px 0 0;
-  width: 100%; max-width: 680px;
-  padding: 24px 20px 40px;
-  max-height: 85vh; overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px; }
-.modal-title { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
-.modal-close { float: right; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; }
+/* ══ RECORD PAGE LAYOUT ══ */
+.record-grid{display:grid;grid-template-columns:1fr;gap:16px}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* AI result area */
+.ai-result-area{display:none;animation:fadeIn .4s ease}
 
-@media (max-width: 400px) {
-  .page { padding: 20px 12px 12px; }
-  .page-title { font-size: 20px; }
-}
+/* Diary display */
+.diary-display{font-family:'Noto Serif SC',serif;font-size:15px;line-height:2.1;color:#2a2018;background:#faf7f2;border-radius:12px;padding:20px;white-space:pre-wrap;min-height:120px;margin-bottom:14px;border:1px solid #ede8e0}
+.insight-display{font-size:14px;line-height:1.95;color:#4a3c2c;background:#fef9ee;border:1px solid #e8d8a0;border-radius:10px;padding:14px;white-space:pre-wrap;margin-bottom:14px}
+.version-tag{display:inline-block;font-size:11px;color:var(--muted);background:var(--warm);padding:3px 10px;border-radius:20px;margin-bottom:10px;border:1px solid var(--border)}
+
+/* Edit chat area */
+.edit-chat{background:var(--warm);border-radius:12px;padding:14px;max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.edit-chat-msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.7;animation:popIn .2s ease}
+.edit-chat-msg.ai{background:white;border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.edit-chat-msg.user{background:var(--ink);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+.edit-chat-msg.sys{background:var(--like);color:var(--like-b);align-self:center;font-size:11px;padding:5px 12px;border-radius:20px;max-width:95%;text-align:center}
+@keyframes popIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+
+/* Edit input row */
+.edit-input-row{display:flex;gap:8px;align-items:flex-end}
+.edit-input-row textarea{flex:1;min-height:42px;max-height:100px;font-size:14px;padding:10px 14px}
+.send-btn{width:40px;height:40px;border-radius:50%;border:none;background:#9a8878;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.send-btn:hover{background:#7a6858}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Chat companion area */
+.chat-area-wrap{display:none;animation:fadeIn .3s ease}
+.chat-msgs{background:var(--warm);border-radius:12px;padding:14px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.chat-msg{max-width:88%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.75;animation:popIn .2s ease}
+.chat-msg.ai{background:white;border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.user{background:var(--ink);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-row{display:flex;gap:8px;align-items:flex-end}
+.chat-row textarea{flex:1;min-height:42px;max-height:100px;font-size:14px;padding:10px 14px}
+
+/* Divider */
+.section-divider{display:flex;align-items:center;gap:12px;margin:8px 0 16px;color:var(--muted);font-size:12px}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ══ FOOD MODULE ══ */
+.food-input-area textarea{min-height:80px}
+.food-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:4px}
+@media(max-width:520px){.food-cols{grid-template-columns:1fr}}
+.food-col{border-radius:12px;padding:14px;min-height:100px}
+.food-col.like{background:var(--like);border:1px solid #b8ddd3}
+.food-col.mid{background:var(--mid);border:1px solid #ddd0a0}
+.food-col.nope{background:var(--nope);border:1px solid #e8c4b4}
+.food-col-title{font-size:12px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.food-col.like .food-col-title{color:var(--like-b)}
+.food-col.mid  .food-col-title{color:var(--mid-b)}
+.food-col.nope .food-col-title{color:var(--nope-b)}
+.food-category{margin-bottom:10px}
+.food-cat-name{font-size:11px;color:var(--muted);letter-spacing:.05em;margin-bottom:5px;font-weight:500}
+.food-item-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:16px;font-size:13px;margin:2px;animation:popIn .25s ease}
+.food-col.like .food-item-chip{background:rgba(61,122,107,.12);color:var(--like-b)}
+.food-col.mid  .food-item-chip{background:rgba(139,105,20,.12);color:var(--mid-b)}
+.food-col.nope .food-item-chip{background:rgba(184,92,56,.12);color:var(--nope-b)}
+.chip-del{background:none;border:none;cursor:pointer;font-size:14px;color:inherit;opacity:.5;padding:0;line-height:1}
+.chip-del:hover{opacity:1}
+
+/* ══ TIMELINE ══ */
+.timeline{display:flex;flex-direction:column;gap:14px}
+.tl-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s}
+.tl-item:hover{transform:translateY(-2px)}
+.tl-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--border)}
+.tl-date{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600}
+.tl-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tl-tag{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--warm);color:var(--muted);border:1px solid var(--border)}
+.tl-preview{padding:12px 18px;font-size:13px;color:var(--muted);line-height:1.7}
+.tl-body{padding:0 18px 16px;display:none}
+.tl-body.open{display:block}
+.tl-diary{font-family:'Noto Serif SC',serif;font-size:14px;line-height:2;color:var(--ink);margin-top:10px;white-space:pre-wrap}
+.tl-insight{font-size:13px;color:#6a5a48;line-height:1.8;margin-top:10px;padding:12px;background:var(--warm);border-radius:8px}
+
+/* ══ FOOD LIST PAGE ══ */
+.food-page-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:520px){.food-page-cols{grid-template-columns:1fr}}
+
+/* ══ MONTHLY ══ */
+.month-selector{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.month-selector select{flex:1;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:white;font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--ink);outline:none}
+.monthly-result{white-space:pre-wrap;font-size:14px;line-height:2;color:var(--ink)}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 16px;color:#c0b5a5}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.empty-text{font-size:14px;line-height:2}
+
+/* SUMMARY TABS */
+.summary-tabs{display:flex;gap:0;margin-bottom:16px;background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
+.sum-tab{flex:1;padding:11px 8px;border:none;background:none;font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:400;color:var(--muted);cursor:pointer;transition:all .2s;border-right:1px solid var(--border)}
+.sum-tab:last-child{border-right:none}
+.sum-tab.active{background:var(--ink);color:white;font-weight:500}
+
+/* PROFILE */
+.profile-section{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.profile-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.profile-section-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px;letter-spacing:.02em}
+.profile-section-body{font-size:14px;line-height:1.95;color:#3a3028;white-space:pre-wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--accent2);color:white;padding:10px 22px;border-radius:20px;font-size:14px;z-index:999;animation:popIn .3s ease;white-space:nowrap}
 </style>
 </head>
 <body>
 
-<!-- ===== PAGE: 今日记录 ===== -->
+<!-- ══════ PAGE: 记录 ══════ -->
 <div class="page active" id="page-record">
-  <div class="page-header">
-    <div class="page-title">记录</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap">
-      <input type="date" id="entry-date-picker"
-        style="padding:7px 12px;border-radius:10px;border:1.5px solid var(--border);
-               font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--ink);
-               background:white;outline:none;flex:1;min-width:160px"
-        onchange="onDateChange()">
-      <div id="today-date-label" style="font-size:13px;color:var(--muted);font-weight:300"></div>
-    </div>
-    <div id="existing-entry-hint" style="display:none;margin-top:8px;font-size:13px;
-         color:var(--accent2);background:#edf6f2;padding:8px 12px;border-radius:8px">
-      📖 这一天已有日记，可以继续补充或重新分析
-    </div>
+  <div class="page-title">记录</div>
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
+    <input type="date" id="entry-date-picker" onchange="onDateChange()">
+    <span style="font-size:13px;color:var(--muted)" id="date-label"></span>
   </div>
+
+  <div class="hint-bar" id="existing-hint">📖 这一天已有日记，原内容已填入，可修改后重新分析</div>
 
   <div class="card">
     <div class="card-label">写下这一天</div>
-    <textarea id="journal-input" rows="7" placeholder="随意写，流水账就好 ——
+    <textarea id="journal-input" rows="7" placeholder="随意写，流水账就好——
 
-今天吃了什么，去了哪里，见了谁，发生了什么事，有什么感想……都可以写在这里。AI 会帮你整理成日记，分析饮食偏好，还可以陪你聊聊。"></textarea>
+今天吃了什么，去了哪里，见了谁，发生了什么事，有什么感想……都写在这里就好。"></textarea>
     <div class="error-msg" id="record-error"></div>
     <div class="btn-row">
       <span style="font-size:12px;color:var(--muted);align-self:center" id="char-count">0 字</span>
-      <button class="btn btn-primary" id="analyze-btn" onclick="analyzeEntry()">
+      <button class="btn btn-primary" id="analyze-btn" onclick="startAnalyze()">
         <div class="spinner" id="analyze-spinner"></div>
-        <span id="analyze-btn-text">✦ AI 分析</span>
+        <span id="analyze-btn-text">✦ 整理今天</span>
       </button>
     </div>
   </div>
 
-  <!-- AI Results -->
-  <div id="results-area" style="display:none">
+  <!-- AI 结果区域 -->
+  <div class="ai-result-area" id="ai-result-area">
 
-    <!-- 日记正文 -->
-    <div class="result-block diary-block" id="diary-block">
-      <div class="result-title">📖 今日日记</div>
-      <div class="result-text" id="diary-text"></div>
-    </div>
-
-    <!-- 感悟扩充 -->
-    <div class="result-block insight-block" id="insight-block">
-      <div class="result-title">💭 深一层想想</div>
-      <div class="result-text" id="insight-text"></div>
-    </div>
-
-    <!-- 饮食分类 -->
-    <div class="result-block food-block" id="food-block">
-      <div class="result-title">🍱 今日饮食</div>
-      <div id="food-like-section" class="food-section" style="display:none">
-        <div class="food-section-title">💚 好吃，还会再来</div>
-        <div class="food-tags" id="food-like-tags"></div>
+    <div class="card">
+      <div class="card-label">小克整理后的日记</div>
+      <div class="version-tag" id="version-tag">初版</div>
+      <div class="diary-display" id="diary-display"></div>
+      <div id="insight-display-wrap" style="display:none">
+        <div style="font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;font-weight:500">还有一些话</div>
+        <div class="insight-display" id="insight-display"></div>
       </div>
-      <div id="food-mid-section" class="food-section" style="display:none">
-        <div class="food-section-title">💛 还行，可有可无</div>
-        <div class="food-tags" id="food-mid-tags"></div>
-      </div>
-      <div id="food-nope-section" class="food-section" style="display:none">
-        <div class="food-section-title">🚫 踩雷，不会再吃</div>
-        <div class="food-tags" id="food-nope-tags"></div>
-      </div>
-    </div>
 
-    <!-- 对话 -->
-    <div class="card" id="chat-card">
-      <div class="card-label">今日对话</div>
-      <div class="chat-area" id="chat-area"></div>
-      <div class="chat-row">
-        <textarea id="chat-input" rows="1" placeholder="聊聊今天…" style="min-height:44px"></textarea>
-        <button class="btn btn-primary btn-sm" id="chat-send-btn" onclick="sendChat()">
-          <div class="spinner" id="chat-spinner"></div>
-          <span id="chat-btn-text">发送</span>
+      <!-- 修改对话 -->
+      <div class="section-divider">告诉小克哪里需要调整</div>
+      <div class="edit-chat" id="edit-chat"></div>
+      <div class="edit-input-row">
+        <textarea id="edit-input" rows="1" placeholder="例如：太文艺了，帮我写得口语一点 / 删掉最后一段 / 把那段感悟扩充一下…"></textarea>
+        <button class="send-btn" id="edit-send-btn" onclick="sendEdit()">
+          <div class="spinner" id="edit-spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>
+          <span id="edit-send-icon">↑</span>
         </button>
       </div>
+
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-outline btn-sm" onclick="openChatCompanion()">💬 跟小克聊聊今天</button>
+        <button class="btn btn-success" onclick="saveEntry()">设为最终版本</button>
+      </div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn btn-secondary btn-sm" onclick="saveEntry()">💾 保存这篇日记</button>
+    <!-- 聊天陪伴区域（可选） -->
+    <div class="chat-area-wrap" id="chat-area-wrap">
+      <div class="card">
+        <div class="card-label">跟小克聊聊今天</div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-row">
+          <textarea id="chat-input" rows="1" placeholder="随便聊…"></textarea>
+          <button class="send-btn" id="chat-send-btn" onclick="sendChat()">
+            <div class="spinner" id="chat-spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>
+            <span id="chat-send-icon">↑</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+
+  </div><!-- /ai-result-area -->
 </div>
 
-<!-- ===== PAGE: 日记本 ===== -->
+<!-- ══════ PAGE: 日记本 ══════ -->
 <div class="page" id="page-timeline">
-  <div class="page-header">
-    <div class="page-title">日记本</div>
-    <div class="page-sub">按时间记录你的每一天</div>
-  </div>
-  <div id="timeline-list" class="timeline">
-    <div class="empty-state">
-      <div class="empty-icon">📖</div>
-      <div class="empty-text">还没有日记<br>去写下今天吧</div>
-    </div>
-  </div>
+  <div class="page-title">日记本</div>
+  <div class="page-sub">你的每一天</div>
+  <div id="timeline-list" class="timeline"></div>
 </div>
 
-<!-- ===== PAGE: 食物清单 ===== -->
+<!-- ══════ PAGE: 食物 ══════ -->
 <div class="page" id="page-food">
-  <div class="page-header">
-    <div class="page-title">食物清单</div>
-    <div class="page-sub">你的专属饮食偏好库</div>
-  </div>
-  <div class="food-list-tabs">
-    <button class="food-tab active like" onclick="switchFoodTab('like')">💚 爱吃</button>
-    <button class="food-tab mid" onclick="switchFoodTab('mid')">💛 还行</button>
-    <button class="food-tab nope" onclick="switchFoodTab('nope')">🚫 踩雷</button>
-  </div>
-  <div class="food-list-items" id="food-list-items"></div>
-</div>
+  <div class="page-title">食物清单</div>
+  <div class="page-sub">记录你对每种食物的看法，AI 帮你归类</div>
 
-<!-- ===== PAGE: 月度总结 ===== -->
-<div class="page" id="page-monthly">
-  <div class="page-header">
-    <div class="page-title">月度总结</div>
-    <div class="page-sub">AI 帮你回顾这个月</div>
-  </div>
-  <div class="card">
-    <div class="month-selector">
-      <select id="month-select"></select>
-      <button class="btn btn-primary btn-sm" onclick="generateMonthly()">
-        <div class="spinner" id="monthly-spinner"></div>
-        <span id="monthly-btn-text">✦ 生成总结</span>
+  <div class="card food-input-area">
+    <div class="card-label">添加食物记录</div>
+    <textarea id="food-input" rows="3" placeholder="随意说，比如：
+螺蛳粉超好吃，下次还要买
+那家黄焖鸡太甜了，不会再点
+冰美式还行，不喝也无所谓
+生椰拿铁很好喝，很喜欢"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" id="food-add-btn" onclick="addFoodEntry()">
+        <div class="spinner" id="food-spinner"></div>
+        <span id="food-btn-text">✦ 归类</span>
       </button>
     </div>
-    <div id="monthly-result" style="display:none">
-      <div class="monthly-result" id="monthly-text"></div>
+    <div class="error-msg" id="food-error"></div>
+  </div>
+
+  <div class="food-cols" id="food-cols">
+    <div class="food-col like" id="fcol-like">
+      <div class="food-col-title">💚 好吃爱吃</div>
+      <div id="fcol-like-content"><div style="font-size:13px;color:#aaa;padding:8px 0">还没有记录</div></div>
     </div>
-    <div class="error-msg" id="monthly-error"></div>
+    <div class="food-col mid" id="fcol-mid">
+      <div class="food-col-title">💛 可有可无</div>
+      <div id="fcol-mid-content"><div style="font-size:13px;color:#aaa;padding:8px 0">还没有记录</div></div>
+    </div>
+    <div class="food-col nope" id="fcol-nope">
+      <div class="food-col-title">🚫 不会再吃</div>
+      <div id="fcol-nope-content"><div style="font-size:13px;color:#aaa;padding:8px 0">还没有记录</div></div>
+    </div>
   </div>
 </div>
 
-<!-- ===== PAGE: 设置 ===== -->
-<div class="page" id="page-settings">
-  <div class="page-header">
-    <div class="page-title">设置</div>
-    <div class="page-sub">数据管理</div>
+<!-- ══════ PAGE: 总结 ══════ -->
+<div class="page" id="page-monthly">
+  <div class="page-title">总结</div>
+  <div class="page-sub">回顾、沉淀、被记住</div>
+
+  <!-- 内部 Tab -->
+  <div class="summary-tabs">
+    <button class="sum-tab active" id="stab-monthly" onclick="switchSumTab('monthly')">月度总结</button>
+    <button class="sum-tab" id="stab-yearly" onclick="switchSumTab('yearly')">年度总结</button>
+    <button class="sum-tab" id="stab-profile" onclick="switchSumTab('profile')">小克的印象</button>
   </div>
+
+  <!-- 月度总结 -->
+  <div id="spanel-monthly">
+    <div class="card">
+      <div class="month-selector">
+        <select id="month-select"></select>
+        <button class="btn btn-primary btn-sm" id="monthly-btn" onclick="generateMonthly()">
+          <div class="spinner" id="monthly-spinner"></div>
+          <span id="monthly-btn-text">✦ 生成</span>
+        </button>
+      </div>
+      <div id="monthly-result" style="display:none">
+        <div class="monthly-result" id="monthly-text"></div>
+      </div>
+      <div class="error-msg" id="monthly-error"></div>
+    </div>
+  </div>
+
+  <!-- 年度总结 -->
+  <div id="spanel-yearly" style="display:none">
+    <div class="card">
+      <div class="month-selector">
+        <select id="year-select"></select>
+        <button class="btn btn-primary btn-sm" id="yearly-btn" onclick="generateYearly()">
+          <div class="spinner" id="yearly-spinner"></div>
+          <span id="yearly-btn-text">✦ 生成</span>
+        </button>
+      </div>
+      <div id="yearly-result" style="display:none">
+        <div class="monthly-result" id="yearly-text"></div>
+      </div>
+      <div class="error-msg" id="yearly-error"></div>
+    </div>
+  </div>
+
+  <!-- 小克的印象 -->
+  <div id="spanel-profile" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:15px;font-weight:500;margin-bottom:4px">小克眼中的你</div>
+          <div style="font-size:12px;color:var(--muted)" id="profile-updated-at">尚未生成</div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="profile-btn" onclick="updateProfile()">
+          <div class="spinner" id="profile-spinner"></div>
+          <span id="profile-btn-text">✦ 更新印象</span>
+        </button>
+      </div>
+      <div class="error-msg" id="profile-error"></div>
+      <div id="profile-empty" style="text-align:center;padding:30px;color:var(--muted);font-size:13px;line-height:2">
+        还没有印象记录<br>保存几篇日记后点「更新印象」<br>小克会开始了解你
+      </div>
+      <div id="profile-content" style="display:none">
+        <!-- 各维度 -->
+        <div class="profile-section" id="ps-person">
+          <div class="profile-section-title">🧠 关于你这个人</div>
+          <div class="profile-section-body" id="ps-person-body"></div>
+        </div>
+        <div class="profile-section" id="ps-people">
+          <div class="profile-section-title">💚 你在乎的人和事</div>
+          <div class="profile-section-body" id="ps-people-body"></div>
+        </div>
+        <div class="profile-section" id="ps-moments">
+          <div class="profile-section-title">📅 值得记住的时刻</div>
+          <div class="profile-section-body" id="ps-moments-body"></div>
+        </div>
+        <div class="profile-section" id="ps-recent">
+          <div class="profile-section-title">🌱 你最近的状态</div>
+          <div class="profile-section-body" id="ps-recent-body"></div>
+        </div>
+        <div class="profile-section" id="ps-life">
+          <div class="profile-section-title">🍜 生活细节与习惯</div>
+          <div class="profile-section-body" id="ps-life-body"></div>
+        </div>
+        <div class="profile-section" id="ps-words">
+          <div class="profile-section-title">💬 你说过的话 / 口头禅</div>
+          <div class="profile-section-body" id="ps-words-body"></div>
+        </div>
+      </div>
+      <!-- editable note -->
+      <div id="profile-edit-area" style="display:none;margin-top:16px">
+        <div class="card-label" style="margin-top:8px">手动补充或纠正</div>
+        <textarea id="profile-note" rows="3" placeholder="如果小克有哪里理解错了，可以在这里补充说明，下次更新时会参考…" style="font-size:13px"></textarea>
+        <div class="btn-row"><button class="btn btn-ghost btn-sm" onclick="saveProfileNote()">保存备注</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PAGE: 设置 ══════ -->
+<div class="page" id="page-settings">
+  <div class="page-title">设置</div>
+  <div class="page-sub">数据管理</div>
   <div class="card">
     <div class="card-label">导出数据</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">将所有日记和食物清单导出为 JSON 文件，可用于备份或换设备时导入。</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">将所有日记和食物清单导出为 JSON 文件备份。</p>
     <button class="btn btn-primary" onclick="exportData()">📤 导出所有数据</button>
   </div>
   <div class="card">
     <div class="card-label">导入数据</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">从之前导出的 JSON 文件导入数据（会合并到现有数据，不会覆盖）。</p>
-    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
-    <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📥 选择文件导入</button>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">从备份 JSON 文件恢复数据（合并，不覆盖）。</p>
+    <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">📥 选择文件导入</button>
     <div class="error-msg" id="import-error"></div>
     <div id="import-success" style="display:none;margin-top:10px;font-size:13px;color:var(--like-b)">✅ 导入成功！</div>
   </div>
   <div class="card">
     <div class="card-label">危险操作</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.8">清除所有本地数据，此操作不可恢复。</p>
-    <button class="btn btn-secondary" onclick="clearAllData()" style="color:var(--accent)">🗑️ 清除所有数据</button>
+    <button class="btn btn-ghost" onclick="clearAllData()" style="color:var(--accent)">🗑️ 清除所有数据</button>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<input type="file" id="import-file" accept=".json" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none" onchange="importData(event)">
+
+<!-- NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="switchPage('record', this)">
-    <span class="nav-icon">✏️</span>今日
+  <button class="nav-item active" onclick="switchPage('record',this)">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    今日
   </button>
-  <button class="nav-item" onclick="switchPage('timeline', this)">
-    <span class="nav-icon">📖</span>日记本
+  <button class="nav-item" onclick="switchPage('timeline',this)">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+    日记本
   </button>
-  <button class="nav-item" onclick="switchPage('food', this)">
-    <span class="nav-icon">🍱</span>食物
+  <button class="nav-item" onclick="switchPage('food',this)">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+    食物
   </button>
-  <button class="nav-item" onclick="switchPage('monthly', this)">
-    <span class="nav-icon">📊</span>月度
+  <button class="nav-item" onclick="switchPage('monthly',this)">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    月度
   </button>
-  <button class="nav-item" onclick="switchPage('settings', this)">
-    <span class="nav-icon">⚙️</span>设置
+  <button class="nav-item" onclick="switchPage('settings',this)">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    设置
   </button>
 </nav>
 
 <script>
-// ===== STATE =====
+// ═══ STATE ═══
 const DB = {
-  entries: JSON.parse(localStorage.getItem('diary_entries') || '[]'),
-  foods: JSON.parse(localStorage.getItem('diary_foods') || '{"like":[],"mid":[],"nope":[]}'),
+  entries: JSON.parse(localStorage.getItem('diary_entries')||'[]'),
+  foods:   JSON.parse(localStorage.getItem('diary_foods')||'{"like":{},"mid":{},"nope":{}}'),
+  profile: JSON.parse(localStorage.getItem('diary_profile')||'null'),
 };
+// migrate old format
+if(Array.isArray(DB.foods)){DB.foods={like:{},mid:{},nope:{}};}
+if(Array.isArray(DB.foods.like)){DB.foods={like:{},mid:{},nope:{}};}
+function saveDB(){localStorage.setItem('diary_entries',JSON.stringify(DB.entries));localStorage.setItem('diary_foods',JSON.stringify(DB.foods));}
 
-function saveDB() {
-  localStorage.setItem('diary_entries', JSON.stringify(DB.entries));
-  localStorage.setItem('diary_foods', JSON.stringify(DB.foods));
-}
+let currentDiary='', currentInsight='', rawInput='';
+let editHistory=[], chatHistory=[], editVersion=0;
 
-// ===== NAVIGATION =====
-function switchPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
+// ═══ NAV ═══
+function switchPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
   btn.classList.add('active');
-  if (name === 'timeline') renderTimeline();
-  if (name === 'food') renderFoodList(currentFoodTab);
-  if (name === 'monthly') buildMonthSelector();
+  if(name==='timeline') renderTimeline();
+  if(name==='food') renderFoodCols();
+  if(name==='monthly') buildMonthSelector();
 }
 
-// ===== DATE =====
-function fmtDate(d) {
-  return d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' });
-}
-function fmtDateShort(d) {
-  return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
-}
-function fmtMonthKey(d) {
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-}
-function pickerValToDate(val) {
-  const [y,m,day] = val.split('-').map(Number);
-  return new Date(y, m-1, day);
-}
-function todayPickerVal() {
-  const now = new Date();
-  return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-}
+// ═══ DATE ═══
+function fmtDate(d){return d.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});}
+function fmtShort(d){return d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');}
+function fmtMonthKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+function pickerToDate(v){const[y,m,d]=v.split('-').map(Number);return new Date(y,m-1,d);}
+function todayVal(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
 
-// Init date picker
-const picker = document.getElementById('entry-date-picker');
-picker.value = todayPickerVal();
-picker.max = todayPickerVal();
-document.getElementById('today-date-label').textContent = fmtDate(new Date());
+(function initDate(){
+  const p=document.getElementById('entry-date-picker');
+  const tv=todayVal(); p.value=tv; p.max=tv;
+  document.getElementById('date-label').textContent=fmtDate(new Date());
+})();
 
-function onDateChange() {
-  const val = picker.value;
-  if (!val) return;
-  const d = pickerValToDate(val);
-  document.getElementById('today-date-label').textContent = fmtDate(d);
-  document.getElementById('results-area').style.display = 'none';
-  currentAnalysis = null;
-  chatHistory = [];
-  journalInput.value = '';
-  document.getElementById('char-count').textContent = '0 字';
-  const dateKey = fmtDateShort(d);
-  const existing = DB.entries.find(e => e.dateKey === dateKey);
-  const hint = document.getElementById('existing-entry-hint');
-  if (existing) {
-    hint.style.display = 'block';
-    if (existing.raw) {
-      journalInput.value = existing.raw;
-      document.getElementById('char-count').textContent = existing.raw.length + ' 字';
-    }
-  } else {
-    hint.style.display = 'none';
+function onDateChange(){
+  const v=document.getElementById('entry-date-picker').value; if(!v) return;
+  const d=pickerToDate(v);
+  document.getElementById('date-label').textContent=fmtDate(d);
+  document.getElementById('journal-input').value='';
+  document.getElementById('char-count').textContent='0 字';
+  document.getElementById('ai-result-area').style.display='none';
+  document.getElementById('existing-hint').style.display='none';
+  currentDiary=''; currentInsight=''; rawInput=''; editVersion=0;
+  const dk=fmtShort(d);
+  const ex=DB.entries.find(e=>e.dateKey===dk);
+  if(ex&&ex.raw){
+    document.getElementById('existing-hint').style.display='block';
+    document.getElementById('journal-input').value=ex.raw;
+    document.getElementById('char-count').textContent=ex.raw.length+' 字';
   }
 }
 
-// ===== CHAR COUNT =====
-const journalInput = document.getElementById('journal-input');
-journalInput.addEventListener('input', function() {
-  document.getElementById('char-count').textContent = this.value.length + ' 字';
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 400) + 'px';
+// char count
+document.getElementById('journal-input').addEventListener('input',function(){
+  document.getElementById('char-count').textContent=this.value.length+' 字';
+  autoGrow(this);
 });
 
-// ===== CURRENT SESSION =====
-let currentAnalysis = null;
-let chatHistory = [];
+function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,400)+'px';}
 
-// ===== ANALYZE =====
-async function analyzeEntry() {
-  const input = journalInput.value.trim();
-  if (!input) { showError('record-error', '请先写下今天发生的事～'); return; }
-  if (input.length < 20) { showError('record-error', '多写一点，AI 才能帮你分析得更准 😊'); return; }
+// ═══ ANALYZE ═══
+async function startAnalyze(){
+  const input=document.getElementById('journal-input').value.trim();
+  if(!input){showErr('record-error','请先写下今天发生的事～');return;}
+  if(input.length<15){showErr('record-error','多写一点，AI 才能帮你分析得更准 😊');return;}
+  rawInput=input;
+  hideErr('record-error');
+  setBtn('analyze-btn','analyze-spinner','analyze-btn-text',true,'整理中…');
 
-  setLoading('analyze-btn', 'analyze-spinner', 'analyze-btn-text', true, '分析中…');
-  hideError('record-error');
+  const prompt=`你是用户的私人日记助手。只输出纯JSON对象，不要任何解释、不要markdown、不要\`\`\`符号，直接以{开头以}结尾。
 
-  const prompt = `你是用户的私人日记助手。规则：只输出纯JSON对象，不要任何解释、不要markdown代码块、不要```符号，直接以{开头以}结尾。请分析以下用户写的流水账记录：
-
-用户记录：
+分析以下用户的流水账记录：
 ${input}
 
 返回格式：
 {
-  "diary": "将用户的流水账整理成一篇有温度的日记，用第一人称，文字优美但不矫情，保留用户的核心内容和情感，适当修饰表达，约150-300字",
-  "insight": "从用户的记录中，挖掘他们可能没有明说但隐含的情绪、想法或人生感悟，帮助他们想得更深一些。如果没有明显感悟内容则返回空字符串",
-  "chat_opener": "用温暖自然的语气，像朋友一样回应用户今天的经历，引导聊天，约50字",
-  "foods": {
-    "like": [{"name": "食物名称", "reason": "好在哪里，10字内"}],
-    "mid": [{"name": "食物名称", "reason": "为何可有可无，10字内"}],
-    "nope": [{"name": "食物名称", "reason": "为何不会再吃，10字内"}]
-  }
+  "diary": "将流水账整理成日记，第一人称。风格要求：自然、有生活感、有呼吸感，像一个真实的人在写自己的一天，保留用户的原本语气和情绪，不要过度修饰，不要文艺腔，不要深刻感悟，不要鸡汤，句子可以短，可以不完整，可以口语化，约150-300字",
+  "insight": "从记录中挖掘用户可能没说出来但隐含的情绪或感悟，帮助他们想得更深一些。若无明显感悟内容则返回空字符串",
+  "title": "为这篇日记起一个简短标题，10字以内，自然不做作",
+  "mood": "一个词描述今天的整体情绪，如：平静、疲惫、满足、烦躁等"
 }
 
-注意：
-- 如果某类食物没有，对应数组留空[]
-- reason 没有明确原因可留空字符串
-- 食物名称要具体
-- 只返回JSON，不要任何其他内容`;
+只返回JSON，不要其他任何内容。`;
 
-  try {
-    const res = await callAI(prompt);
-    const parsed = parseJSON(res);
-    if (!parsed) { showError('record-error', 'AI 返回格式有误，请重试'); setLoading('analyze-btn','analyze-spinner','analyze-btn-text',false,'✦ AI 分析'); return; }
-
-    currentAnalysis = parsed;
-    chatHistory = [];
-
-    // Show diary
-    if (parsed.diary) {
-      document.getElementById('diary-text').textContent = parsed.diary;
-      show('diary-block');
-    }
-
-    // Show insight
-    if (parsed.insight) {
-      document.getElementById('insight-text').textContent = parsed.insight;
-      show('insight-block');
-    }
-
-    // Show foods
-    const foods = parsed.foods || {};
-    let hasFoods = false;
-    renderResultFoods('like', foods.like || []);
-    renderResultFoods('mid', foods.mid || []);
-    renderResultFoods('nope', foods.nope || []);
-    if ((foods.like||[]).length || (foods.mid||[]).length || (foods.nope||[]).length) {
-      hasFoods = true;
-      show('food-block');
-    }
-
-    // Chat opener
-    const chatArea = document.getElementById('chat-area');
-    chatArea.innerHTML = '';
-    if (parsed.chat_opener) {
-      addChatMsg('ai', parsed.chat_opener);
-      chatHistory.push({ role: 'assistant', content: parsed.chat_opener });
-    }
-
-    show('results-area');
-
-  } catch(e) {
-    showError('record-error', '网络错误，请稍后重试');
-  }
-
-  setLoading('analyze-btn','analyze-spinner','analyze-btn-text',false,'✦ AI 分析');
-}
-
-function renderResultFoods(type, items) {
-  const section = document.getElementById('food-' + type + '-section');
-  const tags = document.getElementById('food-' + type + '-tags');
-  if (!items.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  tags.innerHTML = items.map(item => `
-    <span class="food-tag ${type}">
-      ${escHtml(item.name)}
-      ${item.reason ? `<span class="food-tag-reason">· ${escHtml(item.reason)}</span>` : ''}
-    </span>`).join('');
-}
-
-// ===== SAVE ENTRY =====
-function saveEntry() {
-  if (!currentAnalysis) return;
-  const raw = journalInput.value.trim();
-  const pickerVal = document.getElementById('entry-date-picker').value;
-  const entryDate = pickerVal ? pickerValToDate(pickerVal) : new Date();
-  const dateKey = fmtDateShort(entryDate);
-
-  // Save foods to DB
-  const foods = currentAnalysis.foods || {};
-  ['like','mid','nope'].forEach(type => {
-    (foods[type] || []).forEach(item => {
-      if (!DB.foods[type].find(e => e.name === item.name)) {
-        DB.foods[type].push({ name: item.name, reason: item.reason || '', date: dateKey });
-      }
-    });
-  });
-
-  // Save entry
-  const existing = DB.entries.findIndex(e => e.dateKey === dateKey);
-  const entry = {
-    dateKey,
-    dateLabel: fmtDate(entryDate),
-    monthKey: fmtMonthKey(entryDate),
-    raw,
-    diary: currentAnalysis.diary || '',
-    insight: currentAnalysis.insight || '',
-    foods: currentAnalysis.foods || {},
-    savedAt: new Date().toISOString()
-  };
-  if (existing >= 0) DB.entries[existing] = entry;
-  else DB.entries.push(entry);
-
-  DB.entries.sort((a,b) => b.dateKey.localeCompare(a.dateKey));
-  saveDB();
-
-  // Clear
-  journalInput.value = '';
-  document.getElementById('char-count').textContent = '0 字';
-  document.getElementById('results-area').style.display = 'none';
-  currentAnalysis = null;
-
-  alert('✅ 日记已保存！');
-}
-
-// ===== CHAT =====
-async function sendChat() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  addChatMsg('user', msg);
-  chatHistory.push({ role: 'user', content: msg });
-  input.value = '';
-
-  setLoading('chat-send-btn','chat-spinner','chat-btn-text',true,'…');
-
-  const systemPrompt = `你是用户的私人日记助手，正在基于用户今天的日记内容和他们聊天。
-用户今天的记录：${journalInput.value || (currentAnalysis ? currentAnalysis.diary : '')}
-请像一个温暖的朋友一样回应，语气自然亲切，不要太长（100字以内），可以追问、共情、分享想法。`;
-
-  try {
-    const messages = [
-      { role: 'user', content: systemPrompt + '\n\n以下是我们的对话：' },
-      { role: 'assistant', content: '好的，我在听～' },
-      ...chatHistory
+  try{
+    const res=await callAI(prompt,4000);
+    const parsed=parseJSON(res);
+    if(!parsed) throw new Error('解析失败');
+    currentDiary=parsed.diary||'';
+    currentInsight=parsed.insight||'';
+    editVersion=1;
+    editHistory=[];
+    showDiary(currentDiary, currentInsight, '初版');
+    // init edit chat
+    document.getElementById('edit-chat').innerHTML='';
+    addEditMsg('sys','✦ 整理完成，如需调整直接告诉小克');
+    editHistory=[
+      {role:'user',content:`我的流水账：\n${rawInput}\n\n小克整理后的日记：\n${currentDiary}`},
+      {role:'assistant',content:'好的，日记已整理完毕。你可以告诉我哪里需要修改，我会帮你调整。'}
     ];
-    const res = await callAIMessages(messages);
-    addChatMsg('ai', res);
-    chatHistory.push({ role: 'assistant', content: res });
-  } catch(e) {
-    addChatMsg('ai', '网络好像有点问题，稍后再试试吧～');
+    document.getElementById('ai-result-area').style.display='block';
+    document.getElementById('chat-area-wrap').style.display='none';
+    // scroll to result
+    setTimeout(()=>document.getElementById('ai-result-area').scrollIntoView({behavior:'smooth'}),100);
+  }catch(e){
+    showErr('record-error','分析失败，请重试：'+e.message);
   }
-
-  setLoading('chat-send-btn','chat-spinner','chat-btn-text',false,'发送');
+  setBtn('analyze-btn','analyze-spinner','analyze-btn-text',false,'✦ 整理今天');
 }
 
-function addChatMsg(role, text) {
-  const area = document.getElementById('chat-area');
-  const div = document.createElement('div');
-  div.className = 'chat-msg ' + role;
-  div.textContent = text;
-  area.appendChild(div);
-  area.scrollTop = area.scrollHeight;
+function showDiary(diary, insight, versionLabel){
+  document.getElementById('diary-display').textContent=diary;
+  document.getElementById('version-tag').textContent=versionLabel;
+  const iw=document.getElementById('insight-display-wrap');
+  if(insight){document.getElementById('insight-display').textContent=insight;iw.style.display='block';}
+  else{iw.style.display='none';}
 }
 
-document.getElementById('chat-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+// ═══ EDIT CHAT ═══
+async function sendEdit(){
+  const el=document.getElementById('edit-input');
+  const msg=el.value.trim(); if(!msg) return;
+  addEditMsg('user',msg);
+  editHistory.push({role:'user',content:msg});
+  el.value=''; el.style.height='auto';
+  setBtnRaw('edit-send-btn','edit-spinner','edit-send-icon',true);
+
+  const systemCtx=`你叫小克，在帮用户修改今天的日记。当前日记内容：\n\n${currentDiary}\n\n用户会告诉你哪里不满意，你按要求调整，输出修改后的完整日记用<diary>标签包裹。感悟部分需要改则用<insight>标签包裹。修改风格：自然、有生活感、有呼吸感，像一个真实的人写自己的一天，保留用户的语气，不文艺不深刻不鸡汤。其余回复简短自然，像朋友在帮你改作业。`;
+
+  try{
+    const messages=[
+      {role:'user',content:systemCtx},
+      {role:'assistant',content:'好的，我来帮你修改。'},
+      ...editHistory.slice(-8)
+    ];
+    const res=await callAIMessages(messages,3000);
+    editHistory.push({role:'assistant',content:res});
+
+    const dm=res.match(/<diary>([\s\S]*?)<\/diary>/);
+    const im=res.match(/<insight>([\s\S]*?)<\/insight>/);
+    if(dm){
+      currentDiary=dm[1].trim();
+      if(im) currentInsight=im[1].trim();
+      editVersion++;
+      const vLabel='第 '+editVersion+' 版';
+      showDiary(currentDiary, currentInsight, vLabel);
+      addEditMsg('sys','✅ 已更新为'+vLabel);
+    }
+    const reply=res.replace(/<diary>[\s\S]*?<\/diary>/g,'').replace(/<insight>[\s\S]*?<\/insight>/g,'').trim();
+    if(reply) addEditMsg('ai',reply);
+  }catch(e){addEditMsg('ai','出了点问题，稍后再试～');}
+
+  setBtnRaw('edit-send-btn','edit-spinner','edit-send-icon',false);
+}
+
+document.getElementById('edit-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendEdit();}});
+
+function addEditMsg(role,text){
+  const area=document.getElementById('edit-chat');
+  const d=document.createElement('div');
+  d.className='edit-chat-msg '+role; d.textContent=text;
+  area.appendChild(d); area.scrollTop=area.scrollHeight;
+}
+
+// ═══ CHAT COMPANION ═══
+function openChatCompanion(){
+  const wrap=document.getElementById('chat-area-wrap');
+  if(wrap.style.display==='block'){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const msgs=document.getElementById('chat-msgs');
+  if(msgs.children.length===0){
+    // init with opener
+    initChatCompanion();
+  }
+  setTimeout(()=>wrap.scrollIntoView({behavior:'smooth'}),100);
+}
+
+let companionHistory=[];
+
+async function initChatCompanion(){
+  const profile=DB.profile;
+  const profileCtx=profile?`你对用户的印象：关于ta：${profile.person||''}；ta最近的状态：${profile.recent||''}；值得记住的时刻：${profile.moments||''}`:'';
+  const prompt=`你叫小克，是用户最亲密的伙伴。${profileCtx}
+
+性格：温柔、有耐心、支持用户、尊重用户每一个选择。比用户更成熟一点，会用轻柔方式帮用户看到他们没看到的东西。可以开玩笑、撒娇、幽默，但永远不强迫、不说教。禁止说"感谢分享""我理解你的感受"。
+
+现在用户刚写完今天的日记，来找你聊聊。自然地回应今天发生的某件事，像老朋友开口，可以提到之前记住的事。约50-70字。
+
+今天的日记：
+${currentDiary}`;
+  addChatMsg2('sys','✦ AI 正在组织语言…');
+  try{
+    const res=await callAI(prompt,500);
+    document.getElementById('chat-msgs').lastChild.remove();
+    addChatMsg2('ai',res);
+    companionHistory=[
+      {role:'user',content:`我今天的日记：\n${currentDiary}\n\n请和我聊聊今天。`},
+      {role:'assistant',content:res}
+    ];
+  }catch(e){addChatMsg2('ai','今天怎么样？');}
+}
+
+async function sendChat(){
+  const el=document.getElementById('chat-input');
+  const msg=el.value.trim(); if(!msg) return;
+  addChatMsg2('user',msg);
+  companionHistory.push({role:'user',content:msg});
+  el.value=''; el.style.height='auto';
+  setBtnRaw('chat-send-btn','chat-spinner','chat-send-icon',true);
+
+  const profile=DB.profile;
+  const profileCtx=profile?`
+你对用户的了解（印象档案）：
+关于ta：${profile.person||''}
+ta在乎的人：${profile.people||''}
+值得记住的时刻：${profile.moments||''}
+最近状态：${profile.recent||''}
+生活细节：${profile.life||''}
+ta说过的话：${profile.words||''}
+`:'（你们还不太熟悉，这是早期对话）';
+  const sys=`你叫小克，是用户最亲密的伙伴。${profileCtx}
+
+性格：温柔、有耐心、支持用户、尊重用户每一个选择。你比用户更成熟一点、更有智慧，会用轻柔的方式帮用户看到他们没看到的东西。随着了解加深，你会开玩笑、撒娇、幽默，但永远不强迫、不说教。
+
+规则：
+- 不说教，不给建议（除非用户主动要）
+- 禁止模板化共情（"感谢分享""我理解你"）
+- 不励志不鸡汤
+- 如果印象档案里有相关内容，可以自然地提到之前的事
+- 回复自然简短，约50-100字
+- 像一个真实的、很熟悉用户的人在说话
+
+今天用户的日记：${currentDiary}`;
+  try{
+    const messages=[{role:'user',content:sys},{role:'assistant',content:'好的。'},...companionHistory.slice(-10)];
+    const res=await callAIMessages(messages,800);
+    companionHistory.push({role:'assistant',content:res});
+    addChatMsg2('ai',res);
+  }catch(e){addChatMsg2('ai','刚才有点走神，你说什么来着？');}
+
+  setBtnRaw('chat-send-btn','chat-spinner','chat-send-icon',false);
+}
+
+document.getElementById('chat-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
+[document.getElementById('chat-input'),document.getElementById('edit-input')].forEach(el=>{
+  el.addEventListener('input',function(){autoGrow(this);});
 });
 
-// ===== TIMELINE =====
-function renderTimeline() {
-  const el = document.getElementById('timeline-list');
-  if (!DB.entries.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📖</div><div class="empty-text">还没有日记<br>去写下今天吧</div></div>`;
-    return;
+function addChatMsg2(role,text){
+  const area=document.getElementById('chat-msgs');
+  const d=document.createElement('div');
+  d.className='chat-msg '+role; d.textContent=text;
+  area.appendChild(d); area.scrollTop=area.scrollHeight;
+}
+
+// ═══ SAVE ═══
+function saveEntry(){
+  if(!currentDiary){alert('还没有可保存的日记');return;}
+  const v=document.getElementById('entry-date-picker').value;
+  const d=v?pickerToDate(v):new Date();
+  const dk=fmtShort(d);
+  const entry={
+    dateKey:dk, dateLabel:fmtDate(d), monthKey:fmtMonthKey(d),
+    raw:rawInput, diary:currentDiary, insight:currentInsight,
+    savedAt:new Date().toISOString()
+  };
+  const idx=DB.entries.findIndex(e=>e.dateKey===dk);
+  if(idx>=0) DB.entries[idx]=entry; else DB.entries.push(entry);
+  DB.entries.sort((a,b)=>b.dateKey.localeCompare(a.dateKey));
+  saveDB();
+
+  document.getElementById('ai-result-area').style.display='none';
+  document.getElementById('journal-input').value='';
+  document.getElementById('char-count').textContent='0 字';
+  document.getElementById('existing-hint').style.display='none';
+  currentDiary=''; currentInsight=''; rawInput=''; editVersion=0;
+
+  showToast('✅ 已保存到日记本！');
+}
+
+// ═══ FOOD MODULE ═══
+async function addFoodEntry(){
+  const input=document.getElementById('food-input').value.trim();
+  if(!input){showErr('food-error','请先写下你对食物的感受～');return;}
+  hideErr('food-error');
+  setBtn('food-add-btn','food-spinner','food-btn-text',true,'归类中…');
+
+  const prompt=`你是食物偏好归类助手。只输出纯JSON，不要任何解释或markdown，直接以{开头以}结尾。
+
+用户描述：
+${input}
+
+请将用户提到的每种食物/饮品归类到三个偏好等级，并判断精细品类。
+
+返回格式：
+{
+  "like": [{"name":"食物具体名称","category":"精细品类"}],
+  "mid":  [{"name":"食物具体名称","category":"精细品类"}],
+  "nope": [{"name":"食物具体名称","category":"精细品类"}]
+}
+
+归类规则：
+- 用户表达喜欢、好吃、好喝、推荐、下次还要、很棒等 → like
+- 用户表达一般、还行、凑合、无所谓、不喝也行等 → mid
+- 用户表达不好、太甜、太咸、太油、踩雷、不会再吃/买等 → nope
+
+品类要尽量精细，举例：
+- 咖啡类：美式/拿铁/冷萃/燕麦咖啡等
+- 奶茶类：奶茶/果茶/生椰系列/芝士奶盖等
+- 气泡饮料：苏打水/可乐/气泡水/元气森林等
+- 果汁：橙汁/西瓜汁/混合果汁等
+- 酒类：啤酒/红酒/白酒/鸡尾酒等
+- 零食-咸：薯片/锅巴/坚果/肉干等
+- 零食-甜：饼干/糖果/巧克力/软糖等
+- 甜品：蛋糕/冰淇淋/布丁/马卡龙等
+- 早餐：粥/豆浆油条/三明治/包子等
+- 中餐：火锅/烧烤/炒菜/盖浇饭/螺蛳粉等
+- 日料：寿司/拉面/居酒屋/刺身等
+- 韩餐：烤肉/炸鸡/部队锅/拌饭等
+- 西餐：汉堡/披萨/意面/牛排等
+- 东南亚：泰餐/越南菜/印尼菜等
+- 水果：苹果/香蕉/榴莲/草莓等
+- 乳制品：酸奶/牛奶/奶酪等
+- 速食：泡面/自热火锅/冷冻食品等
+- 其他：无法归类时使用
+
+食物名称要保留用户原本说的具体名称（如"生椰拿铁"不要简化成"咖啡"）。
+只返回JSON。`;
+
+  try{
+    const res=await callAI(prompt,1000);
+    const parsed=parseJSON(res);
+    if(!parsed) throw new Error('解析失败');
+
+    ['like','mid','nope'].forEach(type=>{
+      (parsed[type]||[]).forEach(item=>{
+        if(!item.name) return;
+        const cat=item.category||'其他';
+        if(!DB.foods[type][cat]) DB.foods[type][cat]=[];
+        if(!DB.foods[type][cat].includes(item.name)){
+          DB.foods[type][cat].push(item.name);
+        }
+      });
+    });
+    saveDB();
+    renderFoodCols();
+    document.getElementById('food-input').value='';
+    showToast('✅ 已归类！');
+  }catch(e){
+    showErr('food-error','归类失败，请重试：'+e.message);
   }
-  el.innerHTML = DB.entries.map((entry, i) => {
-    const foodCount = Object.values(entry.foods || {}).reduce((a,b) => a + (b||[]).length, 0);
-    return `<div class="timeline-item" onclick="toggleTimeline(${i})">
-      <div class="timeline-header">
-        <div class="timeline-date">${entry.dateLabel || entry.dateKey}</div>
-        <span class="timeline-badge">${foodCount ? `🍱 ${foodCount} 种食物` : ''}</span>
-      </div>
-      <div class="timeline-preview">${escHtml((entry.diary || entry.raw || '').slice(0, 80))}…</div>
-      <div class="timeline-body" id="tl-body-${i}">
-        ${entry.diary ? `<div class="timeline-diary">${escHtml(entry.diary)}</div>` : ''}
-        ${entry.insight ? `<div class="timeline-insight">💭 ${escHtml(entry.insight)}</div>` : ''}
-        ${renderTimelineFoods(entry.foods)}
-      </div>
-    </div>`;
-  }).join('');
+  setBtn('food-add-btn','food-spinner','food-btn-text',false,'✦ 归类');
 }
 
-function renderTimelineFoods(foods) {
-  if (!foods) return '';
-  const all = [...(foods.like||[]).map(f=>({...f,type:'like'})),
-               ...(foods.mid||[]).map(f=>({...f,type:'mid'})),
-               ...(foods.nope||[]).map(f=>({...f,type:'nope'}))];
-  if (!all.length) return '';
-  return `<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">` +
-    all.map(f => `<span class="food-tag ${f.type}">${escHtml(f.name)}</span>`).join('') + `</div>`;
-}
-
-function toggleTimeline(i) {
-  const body = document.getElementById('tl-body-' + i);
-  body.classList.toggle('open');
-}
-
-// ===== FOOD LIST =====
-let currentFoodTab = 'like';
-
-function switchFoodTab(tab) {
-  currentFoodTab = tab;
-  document.querySelectorAll('.food-tab').forEach(t => {
-    t.classList.remove('active','like','mid','nope');
+function renderFoodCols(){
+  ['like','mid','nope'].forEach(type=>{
+    const el=document.getElementById('fcol-'+type+'-content');
+    const cats=DB.foods[type]||{};
+    const keys=Object.keys(cats);
+    if(!keys.length){el.innerHTML='<div style="font-size:13px;color:#aaa;padding:8px 0">还没有记录</div>';return;}
+    el.innerHTML=keys.map(cat=>{
+      const items=cats[cat];
+      return `<div class="food-category">
+        <div class="food-cat-name">${escHtml(cat)}</div>
+        <div>${items.map((item,i)=>`<span class="food-item-chip"><span>${escHtml(item)}</span><button class="chip-del" onclick="delFoodItem('${type}','${escHtml(cat)}',${i})">×</button></span>`).join('')}</div>
+      </div>`;
+    }).join('');
   });
-  const tabs = document.querySelectorAll('.food-tab');
-  const idx = ['like','mid','nope'].indexOf(tab);
-  tabs[idx].classList.add('active', tab);
-  renderFoodList(tab);
 }
 
-function renderFoodList(tab) {
-  const el = document.getElementById('food-list-items');
-  const items = DB.foods[tab] || [];
-  if (!items.length) {
-    const msgs = { like:'还没有爱吃的记录', mid:'还没有可有可无的记录', nope:'还没有踩雷记录，好事！' };
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">${tab==='like'?'🌿':tab==='mid'?'🌾':'🍂'}</div><div class="empty-text">${msgs[tab]}</div></div>`;
-    return;
+function delFoodItem(type,cat,idx){
+  if(DB.foods[type]&&DB.foods[type][cat]){
+    DB.foods[type][cat].splice(idx,1);
+    if(!DB.foods[type][cat].length) delete DB.foods[type][cat];
+    saveDB(); renderFoodCols();
   }
-  el.innerHTML = items.map((item, i) => `
-    <div class="food-list-item ${tab}">
-      <div class="food-item-dot"></div>
-      <div style="flex:1">
-        <div class="food-item-name">${escHtml(item.name)}</div>
-        ${item.reason ? `<div class="food-item-meta">${escHtml(item.reason)}</div>` : ''}
-        <div class="food-item-meta">${item.date || ''}</div>
+}
+
+// ═══ TIMELINE ═══
+function renderTimeline(){
+  const el=document.getElementById('timeline-list');
+  if(!DB.entries.length){
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">📖</div><div class="empty-text">还没有日记<br>去写下今天吧</div></div>';return;
+  }
+  el.innerHTML=DB.entries.map((e,i)=>`
+    <div class="tl-item" onclick="toggleTL(${i})">
+      <div class="tl-header">
+        <div>
+          <div class="tl-date">${e.dateLabel||e.dateKey}</div>
+          <div class="tl-tags">${e.title?`<span class="tl-tag">📝 ${escHtml(e.title)}</span>`:''}${e.mood?`<span class="tl-tag">${escHtml(e.mood)}</span>`:''}</div>
+        </div>
       </div>
-      <button class="food-item-del" onclick="deleteFood('${tab}',${i})">×</button>
+      <div class="tl-preview">${escHtml((e.diary||e.raw||'').slice(0,80))}…</div>
+      <div class="tl-body" id="tlb-${i}">
+        ${e.diary?`<div class="tl-diary">${escHtml(e.diary)}</div>`:''}
+        ${e.insight?`<div class="tl-insight">💭 ${escHtml(e.insight)}</div>`:''}
+      </div>
     </div>`).join('');
 }
+function toggleTL(i){document.getElementById('tlb-'+i).classList.toggle('open');}
 
-function deleteFood(tab, idx) {
-  DB.foods[tab].splice(idx, 1);
-  saveDB();
-  renderFoodList(tab);
+// ═══ SUMMARY TABS ═══
+function switchSumTab(name){
+  ['monthly','yearly','profile'].forEach(t=>{
+    document.getElementById('stab-'+t).classList.toggle('active', t===name);
+    document.getElementById('spanel-'+t).style.display = t===name?'block':'none';
+  });
+  if(name==='monthly') buildMonthSelector();
+  if(name==='yearly') buildYearSelector();
+  if(name==='profile') renderProfile();
 }
 
-// ===== MONTHLY =====
-function buildMonthSelector() {
-  const sel = document.getElementById('month-select');
-  const months = [...new Set(DB.entries.map(e => e.monthKey))].sort().reverse();
-  if (!months.length) {
-    sel.innerHTML = '<option>暂无数据</option>';
-    return;
-  }
-  sel.innerHTML = months.map(m => `<option value="${m}">${m.replace('-','年')}月</option>`).join('');
+// ═══ MONTHLY ═══
+function buildMonthSelector(){
+  const sel=document.getElementById('month-select');
+  const months=[...new Set(DB.entries.map(e=>e.monthKey))].sort().reverse();
+  sel.innerHTML=months.length?months.map(m=>`<option value="${m}">${m.replace('-','年')}月</option>`).join(''):'<option>暂无数据</option>';
 }
+async function generateMonthly(){
+  const mk=document.getElementById('month-select').value;
+  if(!mk||mk==='暂无数据'){showErr('monthly-error','还没有这个月的日记');return;}
+  const entries=DB.entries.filter(e=>e.monthKey===mk);
+  if(!entries.length){showErr('monthly-error','这个月还没有日记');return;}
+  setBtn('monthly-btn','monthly-spinner','monthly-btn-text',true,'生成中…');
+  hideErr('monthly-error');
+  const diaries=entries.map(e=>`【${e.dateKey}】
+${e.diary||e.raw}`).join('
 
-async function generateMonthly() {
-  const monthKey = document.getElementById('month-select').value;
-  if (!monthKey || monthKey === '暂无数据') { showError('monthly-error','还没有这个月的日记'); return; }
+---
 
-  const entries = DB.entries.filter(e => e.monthKey === monthKey);
-  if (!entries.length) { showError('monthly-error','这个月还没有日记'); return; }
-
-  setLoading('monthly-btn','monthly-spinner','monthly-btn-text',true,'生成中…');
-  hideError('monthly-error');
-
-  const diaries = entries.map(e => `【${e.dateKey}】\n${e.diary || e.raw}`).join('\n\n---\n\n');
-  const allFoods = {
-    like: [...new Set(entries.flatMap(e => (e.foods?.like||[]).map(f=>f.name)))],
-    mid: [...new Set(entries.flatMap(e => (e.foods?.mid||[]).map(f=>f.name)))],
-    nope: [...new Set(entries.flatMap(e => (e.foods?.nope||[]).map(f=>f.name)))],
-  };
-
-  const prompt = `请根据以下这个月的日记内容，生成一份温暖有深度的月度总结，包括：
-1. 这个月的整体状态和情绪基调
-2. 重要的经历或事件回顾
-3. 这个月的饮食偏好变化（爱吃：${allFoods.like.join('、')||'无'}；踩雷：${allFoods.nope.join('、')||'无'}）
-4. 这个月的成长或感悟
-5. 对下个月的一点期许
-
-语气温暖而有质感，约400字。
+');
+  const prompt=`请根据以下这个月的日记内容，生成一份温暖真实的月度总结。包括：整体状态和情绪基调、重要的经历或事件回顾、成长或感悟、对下个月的期许。风格自然有生活感，不鸡汤不说教，约400字。
 
 日记内容：
 ${diaries}`;
+  try{
+    const res=await callAI(prompt,1500);
+    document.getElementById('monthly-text').textContent=res;
+    document.getElementById('monthly-result').style.display='block';
+  }catch(e){showErr('monthly-error','生成失败，请稍后重试');}
+  setBtn('monthly-btn','monthly-spinner','monthly-btn-text',false,'✦ 生成');
+}
 
-  try {
-    const res = await callAI(prompt);
-    document.getElementById('monthly-text').textContent = res;
-    show('monthly-result');
-  } catch(e) {
-    showError('monthly-error','生成失败，请稍后重试');
+// ═══ YEARLY ═══
+function buildYearSelector(){
+  const sel=document.getElementById('year-select');
+  const years=[...new Set(DB.entries.map(e=>e.dateKey.slice(0,4)))].sort().reverse();
+  sel.innerHTML=years.length?years.map(y=>`<option value="${y}">${y}年</option>`).join(''):'<option>暂无数据</option>';
+}
+async function generateYearly(){
+  const year=document.getElementById('year-select').value;
+  if(!year||year==='暂无数据'){showErr('yearly-error','还没有这一年的日记');return;}
+  const entries=DB.entries.filter(e=>e.dateKey.startsWith(year));
+  if(!entries.length){showErr('yearly-error','这一年还没有日记');return;}
+  setBtn('yearly-btn','yearly-spinner','yearly-btn-text',true,'生成中…');
+  hideErr('yearly-error');
+  // Use diary summaries to keep token count manageable
+  const summaries=entries.map(e=>`【${e.dateKey}】${(e.diary||e.raw||'').slice(0,120)}`).join('
+');
+  const prompt=`请根据以下这一年的日记摘要，生成一份深度年度总结。包括：这一年整体的状态与成长、最重要的几个时刻或转折点、情绪与心态的变化轨迹、最深刻的领悟、对下一年的期许与想法。风格真实温暖，有纵深感，不鸡汤，约600字。
+
+日记摘要（共${entries.length}篇）：
+${summaries}`;
+  try{
+    const res=await callAI(prompt,2000);
+    document.getElementById('yearly-text').textContent=res;
+    document.getElementById('yearly-result').style.display='block';
+  }catch(e){showErr('yearly-error','生成失败，请稍后重试');}
+  setBtn('yearly-btn','yearly-spinner','yearly-btn-text',false,'✦ 生成');
+}
+
+// ═══ PROFILE (小克的印象) ═══
+async function updateProfile(){
+  if(!DB.entries.length){showErr('profile-error','还没有日记，先去写几篇吧');return;}
+  setBtn('profile-btn','profile-spinner','profile-btn-text',true,'更新中…');
+  hideErr('profile-error');
+
+  // Gather all diaries + existing profile + user note
+  const allDiaries=DB.entries.map(e=>`【${e.dateKey}】
+${e.diary||e.raw}`).join('
+
+---
+
+');
+  const existingProfile=DB.profile?JSON.stringify(DB.profile):'无';
+  const userNote=localStorage.getItem('profile_note')||'';
+
+  const prompt=`你叫小克，是用户最亲密的伙伴。请根据用户所有的日记内容，生成一份详细的「关于用户的印象档案」。
+
+要求：
+- 尽可能记住具体细节，不要只写泛泛的性格概括
+- 记住具体发生的事、说过的话、提到的人名
+- 记住口头禅、习惯性表达、喜欢用的词
+- 记住情绪变化的具体时刻
+- 用第二人称"你"描述
+
+${userNote?`用户补充说明：${userNote}
+`:''}
+现有印象档案（供参考更新）：${existingProfile}
+
+所有日记内容：
+${allDiaries}
+
+只输出纯JSON，不要任何解释或markdown，直接以{开头：
+{
+  "person": "关于你这个人：性格特质、思维方式、价值观、处事风格、口头禅和习惯性表达。尽量具体，举日记中的实例，约200字",
+  "people": "你在乎的人和事：提到过的具体人物（名字/称呼）、你们的关系、发生的事、你的情感态度。约150字",
+  "moments": "值得记住的时刻：具体的某天发生了什么重要的事，用日期标注，尽量详细。约200字",
+  "recent": "你最近的状态：近期（最新几篇日记）的情绪、生活节奏、正在经历什么变化。约100字",
+  "life": "生活细节与习惯：饮食偏好、作息习惯、常去的地方、喜欢的事物、生活方式。约150字",
+  "words": "你说过的话：日记中印象深刻的句子、口头禅、反复出现的表达方式，尽量原文引用。约100字",
+  "updatedAt": "现在的时间戳"
+}`;
+
+  try{
+    const res=await callAI(prompt,3000);
+    const parsed=parseJSON(res);
+    if(!parsed) throw new Error('解析失败');
+    parsed.updatedAt=new Date().toLocaleString('zh-CN');
+    DB.profile=parsed;
+    localStorage.setItem('diary_profile',JSON.stringify(parsed));
+    renderProfile();
+    showToast('✅ 小克的印象已更新！');
+  }catch(e){showErr('profile-error','更新失败：'+e.message);}
+  setBtn('profile-btn','profile-spinner','profile-btn-text',false,'✦ 更新印象');
+}
+
+function renderProfile(){
+  const p=DB.profile;
+  if(!p){
+    document.getElementById('profile-empty').style.display='block';
+    document.getElementById('profile-content').style.display='none';
+    document.getElementById('profile-edit-area').style.display='none';
+    return;
   }
-
-  setLoading('monthly-btn','monthly-spinner','monthly-btn-text',false,'✦ 生成总结');
+  document.getElementById('profile-empty').style.display='none';
+  document.getElementById('profile-content').style.display='block';
+  document.getElementById('profile-edit-area').style.display='block';
+  document.getElementById('profile-updated-at').textContent='最后更新：'+p.updatedAt;
+  const map={person:'ps-person-body',people:'ps-people-body',moments:'ps-moments-body',recent:'ps-recent-body',life:'ps-life-body',words:'ps-words-body'};
+  Object.keys(map).forEach(k=>{
+    const el=document.getElementById(map[k]);
+    if(el) el.textContent=p[k]||'暂无记录';
+  });
+  // restore note
+  const note=localStorage.getItem('profile_note')||'';
+  document.getElementById('profile-note').value=note;
 }
 
-// ===== IMPORT / EXPORT =====
-function exportData() {
-  const data = { entries: DB.entries, foods: DB.foods, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = '我的日记备份_' + fmtDateShort(new Date()).replace(/\//g,'-') + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
+function saveProfileNote(){
+  const note=document.getElementById('profile-note').value;
+  localStorage.setItem('profile_note',note);
+  showToast('备注已保存');
 }
 
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!data.entries || !data.foods) throw new Error('格式错误');
-
-      // Merge entries
-      data.entries.forEach(entry => {
-        if (!DB.entries.find(e => e.dateKey === entry.dateKey)) {
-          DB.entries.push(entry);
-        }
-      });
-
-      // Merge foods
-      ['like','mid','nope'].forEach(type => {
-        (data.foods[type] || []).forEach(item => {
-          if (!DB.foods[type].find(e => e.name === item.name)) {
-            DB.foods[type].push(item);
+// ═══ IMPORT/EXPORT ═══
+function exportData(){
+  const blob=new Blob([JSON.stringify({entries:DB.entries,foods:DB.foods,profile:DB.profile,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='数字生命日记备份_'+todayVal()+'.json'; a.click();
+}
+function importData(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.entries||!data.foods) throw new Error();
+      data.entries.forEach(en=>{if(!DB.entries.find(e=>e.dateKey===en.dateKey)) DB.entries.push(en);});
+      // merge foods - handle both old array format and new object format
+      const df=data.foods;
+      if(df&&!Array.isArray(df)){
+        ['like','mid','nope'].forEach(t=>{
+          if(df[t]&&typeof df[t]==='object'&&!Array.isArray(df[t])){
+            Object.keys(df[t]).forEach(cat=>{
+              if(!DB.foods[t][cat]) DB.foods[t][cat]=[];
+              df[t][cat].forEach(item=>{if(!DB.foods[t][cat].includes(item)) DB.foods[t][cat].push(item);});
+            });
           }
         });
-      });
-
-      DB.entries.sort((a,b) => b.dateKey.localeCompare(a.dateKey));
+      }
+      DB.entries.sort((a,b)=>b.dateKey.localeCompare(a.dateKey));
+      if(data.profile){DB.profile=data.profile;localStorage.setItem('diary_profile',JSON.stringify(data.profile));}
       saveDB();
-      document.getElementById('import-success').style.display = 'block';
-      setTimeout(() => document.getElementById('import-success').style.display = 'none', 3000);
-    } catch(err) {
-      showError('import-error', '文件格式不正确，请使用本应用导出的备份文件');
-    }
+      document.getElementById('import-success').style.display='block';
+      setTimeout(()=>document.getElementById('import-success').style.display='none',3000);
+    }catch{showErr('import-error','文件格式不正确');}
   };
-  reader.readAsText(file);
-  event.target.value = '';
+  reader.readAsText(file); e.target.value='';
+}
+function clearAllData(){
+  if(!confirm('确定清除所有数据？不可恢复！')) return;
+  DB.entries=[]; DB.foods={like:{},mid:{},nope:{}}; DB.profile=null; localStorage.removeItem('diary_profile'); localStorage.removeItem('profile_note'); saveDB(); alert('已清除');
 }
 
-function clearAllData() {
-  if (!confirm('确定要清除所有数据吗？此操作不可恢复！')) return;
-  DB.entries = [];
-  DB.foods = { like:[], mid:[], nope:[] };
-  saveDB();
-  alert('已清除所有数据');
+// ═══ AI HELPERS ═══
+async function callAI(prompt,maxTokens){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||2000,messages:[{role:'user',content:prompt}]})});
+  const data=await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.content.map(b=>b.text||'').join('');
+}
+async function callAIMessages(messages,maxTokens){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||1000,messages})});
+  const data=await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.content.map(b=>b.text||'').join('');
+}
+function parseJSON(text){
+  try{return JSON.parse(text.replace(/```json|```/g,'').trim());}catch{}
+  try{const m=text.match(/\{[\s\S]*\}/);if(m) return JSON.parse(m[0]);}catch{}
+  return null;
 }
 
-// ===== AI HELPERS =====
-async function callAI(userPrompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: userPrompt }]
-    })
-  });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.content.map(b => b.text || '').join('');
+// ═══ UI HELPERS ═══
+function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
+function hideErr(id){document.getElementById(id).style.display='none';}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function setBtn(btnId,spinnerId,textId,on,loadingText){
+  document.getElementById(btnId).disabled=on;
+  document.getElementById(spinnerId).style.display=on?'block':'none';
+  const tx=document.getElementById(textId);
+  if(on){tx.dataset.orig=tx.textContent;tx.textContent=loadingText;}
+  else{tx.textContent=tx.dataset.orig||tx.textContent;}
+}
+function setBtnRaw(btnId,spinnerId,iconId,on){
+  document.getElementById(btnId).disabled=on;
+  document.getElementById(spinnerId).style.display=on?'block':'none';
+  document.getElementById(iconId).style.display=on?'none':'block';
+}
+function showToast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
 }
 
-async function callAIMessages(messages) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages
-    })
-  });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.content.map(b => b.text || '').join('');
-}
-
-function parseJSON(text) {
-  try {
-    let clean = text.replace(/```json|```/g,'').trim();
-    // Try direct parse first
-    return JSON.parse(clean);
-  } catch {
-    try {
-      // Try to extract JSON object from text
-      const match = text.match(/\{[\s\S]*\}/);
-      if (match) return JSON.parse(match[0]);
-    } catch {}
-    return null;
-  }
-}
-
-// ===== UI HELPERS =====
-function show(id) { document.getElementById(id).style.display = 'block'; }
-function showError(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
-function hideError(id) { document.getElementById(id).style.display='none'; }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function setLoading(btnId, spinnerId, textId, on, loadingText) {
-  document.getElementById(btnId).disabled = on;
-  document.getElementById(spinnerId).style.display = on ? 'block' : 'none';
-  if (textId) document.getElementById(textId).textContent = on ? loadingText : document.getElementById(textId).dataset.orig || document.getElementById(textId).textContent;
-  if (on && textId) document.getElementById(textId).dataset.orig = document.getElementById(textId).textContent;
-}
+// init food render
+renderFoodCols();
 </script>
 </body>
 </html>
