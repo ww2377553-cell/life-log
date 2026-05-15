@@ -450,7 +450,7 @@ input[type=date]{padding:8px 14px;border-radius:10px;border:1.5px solid var(--bo
 const DB = {
   entries: JSON.parse(localStorage.getItem('diary_entries')||'[]'),
   foods:   JSON.parse(localStorage.getItem('diary_foods')||'{"like":{},"mid":{},"nope":{}}'),
-  profile: JSON.parse(localStorage.getItem('diary_profile')||'null'),
+  profile: (()=>{try{return JSON.parse(localStorage.getItem('diary_profile'));}catch{return null;}})(),
 };
 // migrate old format
 if(Array.isArray(DB.foods)){DB.foods={like:{},mid:{},nope:{}};}
@@ -694,7 +694,7 @@ ta说过的话：${profile.words||''}
 }
 
 document.getElementById('chat-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
-[document.getElementById('chat-input'),document.getElementById('edit-input')].forEach(el=>{
+;[document.getElementById('chat-input'),document.getElementById('edit-input')].forEach(el=>{
   el.addEventListener('input',function(){autoGrow(this);});
 });
 
@@ -875,12 +875,7 @@ async function generateMonthly(){
   if(!entries.length){showErr('monthly-error','这个月还没有日记');return;}
   setBtn('monthly-btn','monthly-spinner','monthly-btn-text',true,'生成中…');
   hideErr('monthly-error');
-  const diaries=entries.map(e=>`【${e.dateKey}】
-${e.diary||e.raw}`).join('
-
----
-
-');
+    const diaries=entries.map(e=>'【'+e.dateKey+'】\n'+(e.diary||e.raw||'')).join('\n\n---\n\n');
   const prompt=`请根据以下这个月的日记内容，生成一份温暖真实的月度总结。包括：整体状态和情绪基调、重要的经历或事件回顾、成长或感悟、对下个月的期许。风格自然有生活感，不鸡汤不说教，约400字。
 
 日记内容：
@@ -907,8 +902,7 @@ async function generateYearly(){
   setBtn('yearly-btn','yearly-spinner','yearly-btn-text',true,'生成中…');
   hideErr('yearly-error');
   // Use diary summaries to keep token count manageable
-  const summaries=entries.map(e=>`【${e.dateKey}】${(e.diary||e.raw||'').slice(0,120)}`).join('
-');
+    const summaries=entries.map(e=>'【'+e.dateKey+'】'+(e.diary||e.raw||'').slice(0,120)).join('\n');
   const prompt=`请根据以下这一年的日记摘要，生成一份深度年度总结。包括：这一年整体的状态与成长、最重要的几个时刻或转折点、情绪与心态的变化轨迹、最深刻的领悟、对下一年的期许与想法。风格真实温暖，有纵深感，不鸡汤，约600字。
 
 日记摘要（共${entries.length}篇）：
@@ -928,12 +922,7 @@ async function updateProfile(){
   hideErr('profile-error');
 
   // Gather all diaries + existing profile + user note
-  const allDiaries=DB.entries.map(e=>`【${e.dateKey}】
-${e.diary||e.raw}`).join('
-
----
-
-');
+    const allDiaries=DB.entries.map(e=>'【'+e.dateKey+'】\n'+(e.diary||e.raw||'')).join('\n\n---\n\n');
   const existingProfile=DB.profile?JSON.stringify(DB.profile):'无';
   const userNote=localStorage.getItem('profile_note')||'';
 
