@@ -174,6 +174,18 @@ input[type=date]{padding:8px 14px;border-radius:10px;border:1.5px solid var(--bo
 .profile-section-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px;letter-spacing:.02em}
 .profile-section-body{font-size:14px;line-height:1.95;color:#3a3028;white-space:pre-wrap}
 
+/* API KEY SETUP */
+.setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.setup-overlay.open{display:flex}
+.setup-box{background:white;border-radius:20px;padding:32px 28px;max-width:420px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.15)}
+.setup-title{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;margin-bottom:8px}
+.setup-sub{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:20px}
+.setup-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-family:'Noto Sans SC',sans-serif;font-size:14px;color:var(--ink);background:var(--warm);outline:none;margin-bottom:12px}
+.setup-input:focus{border-color:var(--accent2);background:white}
+.api-indicator{position:fixed;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:#ccc;z-index:99;cursor:pointer;transition:background .3s}
+.api-indicator.ok{background:#3d7a6b}
+.api-indicator.missing{background:#e0a040}
+
 /* TOAST */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--accent2);color:white;padding:10px 22px;border-radius:20px;font-size:14px;z-index:999;animation:popIn .3s ease;white-space:nowrap}
 </style>
@@ -418,6 +430,20 @@ input[type=date]{padding:8px 14px;border-radius:10px;border:1.5px solid var(--bo
     <button class="btn btn-ghost" onclick="clearAllData()" style="color:var(--accent)">🗑️ 清除所有数据</button>
   </div>
 </div>
+
+<!-- API KEY SETUP OVERLAY -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-title">欢迎使用小克日记 👋</div>
+    <div class="setup-sub">需要填入你的 DeepSeek API Key 才能使用 AI 功能。Key 只存在你的手机本地，不会上传到任何服务器。<br><br>去 <strong>platform.deepseek.com</strong> → API Keys 获取。</div>
+    <input class="setup-input" type="password" id="api-key-input" placeholder="sk-xxxxxxxxxxxxxxxx">
+    <button class="btn btn-primary" style="width:100%" onclick="saveApiKey()">保存并开始使用</button>
+    <div class="error-msg" id="setup-error" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- API indicator dot -->
+<div class="api-indicator" id="api-indicator" title="点击更改 API Key" onclick="openSetup()"></div>
 
 <input type="file" id="import-file" accept=".json" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none" onchange="importData(event)">
 
@@ -1035,17 +1061,31 @@ function clearAllData(){
 }
 
 // ═══ AI HELPERS ═══
+function getApiKey(){return localStorage.getItem('deepseek_api_key')||'';}
+
 async function callAI(prompt,maxTokens){
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||2000,messages:[{role:'user',content:prompt}]})});
+  const key=getApiKey();
+  if(!key){openSetup();throw new Error('请先设置 API Key');}
+  const res=await fetch('https://api.deepseek.com/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+    body:JSON.stringify({model:'deepseek-chat',max_tokens:maxTokens||2000,messages:[{role:'user',content:prompt}]})
+  });
   const data=await res.json();
-  if(data.error) throw new Error(data.error.message);
-  return data.content.map(b=>b.text||'').join('');
+  if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+  return data.choices[0].message.content||'';
 }
 async function callAIMessages(messages,maxTokens){
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||1000,messages})});
+  const key=getApiKey();
+  if(!key){openSetup();throw new Error('请先设置 API Key');}
+  const res=await fetch('https://api.deepseek.com/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+    body:JSON.stringify({model:'deepseek-chat',max_tokens:maxTokens||1000,messages})
+  });
   const data=await res.json();
-  if(data.error) throw new Error(data.error.message);
-  return data.content.map(b=>b.text||'').join('');
+  if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+  return data.choices[0].message.content||'';
 }
 function parseJSON(text){
   try{return JSON.parse(text.replace(/```json|```/g,'').trim());}catch{}
@@ -1076,6 +1116,33 @@ function showToast(msg){
 
 // init food render
 renderFoodCols();
+
+// ═══ API KEY SETUP ═══
+function openSetup(){
+  document.getElementById('setup-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('api-key-input').focus(),100);
+}
+function saveApiKey(){
+  const key=document.getElementById('api-key-input').value.trim();
+  if(!key||!key.startsWith('sk-')){
+    showErr('setup-error','请输入正确的 API Key（以 sk- 开头）');return;
+  }
+  localStorage.setItem('deepseek_api_key',key);
+  document.getElementById('setup-overlay').classList.remove('open');
+  document.getElementById('api-key-input').value='';
+  updateApiIndicator();
+  showToast('✅ API Key 已保存！');
+}
+function updateApiIndicator(){
+  const el=document.getElementById('api-indicator');
+  if(getApiKey()){el.classList.add('ok');el.classList.remove('missing');}
+  else{el.classList.add('missing');el.classList.remove('ok');}
+}
+// Show setup on first visit if no key
+(function(){
+  updateApiIndicator();
+  if(!getApiKey()) setTimeout(openSetup, 600);
+})();
 </script>
 </body>
 </html>
